@@ -12,10 +12,10 @@ Info to supply from sparkfun weather board:
 # Ambient light sensor (analog level)
 
 Other possibilities from vonHippel or some such connections [simulated for demo purposes]:
+ 
+#Wind speed + direction -weather meter sparkfun http://www.sparkfun.com/products/8942
+#Rain gauge - weather meter sparkfun
 
-#Wind speed + direction
+
 #Gas levels from BUGsniff?
 #Photo of cloud cover from camera
-#
-
-
