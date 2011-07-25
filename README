@@ -1,0 +1,21 @@
+--IDEAS--
+
+
+Website to display weather info at different GPS locations from BUGs.
+
+Info to supply from sparkfun weather board:
+
+
+# Absolute barometric pressure accurate within +/-150 Pascal
+# Relative humidity accurate within +/-2%
+# Temperature accurate within +/-0.3 degrees C
+# Ambient light sensor (analog level)
+
+Other possibilities from vonHippel or some such connections [simulated for demo purposes]:
+ 
+#Wind speed + direction -weather meter sparkfun http://www.sparkfun.com/products/8942
+#Rain gauge - weather meter sparkfun
+
+
+#Gas levels from BUGsniff?
+#Photo of cloud cover from camera
