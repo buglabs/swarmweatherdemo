@@ -1,0 +1,30 @@
+--IDEAS--
+
+
+Website to display weather info at different GPS locations from BUGs.
+
+Info to supply from sparkfun weather board(s):
+
+
+# Absolute barometric pressure accurate within +/-150 Pascal
+# Relative humidity accurate within +/-2%
+# Temperature accurate within +/-0.3 degrees C
+# Ambient light sensor (analog level)
+
+Other possibilities from vonHippel or some such connections [ weather meter sparkfun ]
+ 
+#Wind speed + direction -weather meter sparkfun http://www.sparkfun.com/products/8942
+#Rain gauge - weather meter sparkfun
+#Servo to rotate camera view?? A.K.A. Supa mofoweatherswarm ?
+
+
+#Gas levels?
+#Photo of cloud cover from camera?
+
+
+Fancy professional-like URL page to display:
+
+#google map location
+#links to seperate weather BUGs?
+#Camera view
+#Above info in some meaning full way - graphs of data over time?
