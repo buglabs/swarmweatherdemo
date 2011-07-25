@@ -1,0 +1,30 @@
+Idears for BUGweather thingy
+
+what this board can do:
+barometric pressure
+humidity
+light sensor
+temperature yo
+
+other bug technologies we've got
+GPS
+Camera
+...basically anything else
+
+IDEAS:
+1. motherbug swarm?
+   -2+ motherbugs, both same graphic UI (see wiki page_
+2. security swarm
+   bugs in different places -> huge changes in light sensitivity
+   takes a picture? motion sensing one->many
+3. Weather Station
+   sparkfun functions, different places, graph, predict
+   good for zoos/aquariums that need to maintain a specific climate
+4. Pandacam!
+   take pictures (dare i say video?) where most motion/light is detected
+   temperature could also work
+5. Monitoring pedestrian traffic: stores and such
+6. Taxi services: use gps to monitor taxis around the city
+7. Energy conservation: turn off light if no movement-->brightness
+   level
+8.
