@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bug-Bundle-Type: Application
+Bundle-Vendor: vish
+Bundle-Version: 1.0.0
+BUG-API-Version: 2.0.2
+Bundle-Name: USB Weather Module Demo
+Bundle-Activator: usb_weather_module_demo.Activator
+Bundle-ManifestVersion: 2
+Bundle-Description: Parses sensor information from Sparkfun's USB Weat
+ her Module
+Import-Package: org.osgi.framework,com.buglabs.device,org.osgi.util.tr
+ acker,org.osgi.service.log,com.buglabs.application,com.buglabs.util,g
+ nu.io,com.buglabs.services.ws
+Bundle-SymbolicName: USB_Weather_Module_Demo
+
