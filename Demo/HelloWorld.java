@@ -27,7 +27,12 @@ public class HelloWorld extends AbstractHandler
 	
 	private String temperature;
 	private String humidity;
-	private String windDirection = "why you no work??";
+	private String windDirection;
+	private String windSpeed;
+	private String dewpoint;
+	private String rainfall;
+	private String pressure;
+	private String batlevel;
 	
 	private String display1;
 	private String display2;
@@ -44,10 +49,10 @@ public class HelloWorld extends AbstractHandler
         response.setStatus(HttpServletResponse.SC_OK);
         baseRequest.setHandled(true);
         response.getWriter().println("<h1>panda's weather</h1>");
-        response.getWriter().println("<h1>" + display1 + "</h1>");
+        response.getWriter().println("<p>" + display1 + "</p>");
         response.getWriter().println("<img src=\"http://farm1.static.flickr.com/45/151498777_2af8148a1f.jpg\">");
         response.getWriter().println("<h1>rmb's weather</h1>");
-        response.getWriter().println("<h1>" + display2 + "</h1>");
+        response.getWriter().println("<p>" + display2 + "</p>");
         /*response.getWriter().println("<h1>Wind Direction :" + windDirection + "</h1>");
         response.getWriter().println("<h1>Temperature :" + temperature + "</h1>");
         response.getWriter().println("<h1>Humidity :" + humidity + "</h1>");*/
@@ -97,9 +102,9 @@ public class HelloWorld extends AbstractHandler
 			System.out.println();
 			//System.out.println(sb.toString());
 			parseFeed2(sb.toString());
-			System.out.println("Temperature: " + temperature);
+			/*System.out.println("Temperature: " + temperature);
 			System.out.println("Wind Direction: " + windDirection);
-			System.out.println("Humidity: " + humidity);
+			System.out.println("Humidity: " + humidity);*/
 			
 
 		} catch (MalformedURLException e) {
@@ -136,10 +141,40 @@ public class HelloWorld extends AbstractHandler
 		humidity = temp;
 		//System.out.println(humidity);
 		
+		temp = feed.substring(feed.indexOf("Wind Speed"));
+		temp = temp.substring(13, temp.indexOf("\","));
+		windSpeed = temp;
+		//System.out.println(windSpeed);
+		
+		temp = feed.substring(feed.indexOf("Dewpoint"));
+		temp = temp.substring(11, temp.indexOf("\","));
+		dewpoint = temp;
+		//System.out.println(dewpoint);
+		
+		temp = feed.substring(feed.indexOf("Cumulative rainfall"));
+		temp = temp.substring(22, temp.indexOf("\","));
+		rainfall = temp;
+		//System.out.println(rainfall);
+		
+		temp = feed.substring(feed.indexOf("Barometric pressure"));
+		temp = temp.substring(22, temp.indexOf("\","));
+		pressure = temp;
+		//System.out.println(pressure);
+		
+		temp = feed.substring(feed.indexOf("Battery level"));
+		temp = temp.substring(16, temp.indexOf("\","));
+		batlevel = temp;
+		//System.out.println(dewpoint);
+		
 		StringBuilder sb = new StringBuilder();
 		sb.append("Wind Direction: " + windDirection + '\n');
 		sb.append("Temperature: " + temperature + '\n');
 		sb.append("Humidity: " + humidity + '\n');
+		sb.append("Wind Speed: " + windSpeed + '\n');
+		sb.append("Dewpoint: " + dewpoint + '\n');
+		sb.append("Cumulative rainfall: " + rainfall + '\n');
+		sb.append("Barometric pressure: " + pressure + '\n');
+		sb.append("Battery level: " + batlevel + '\n');
 		return sb.toString();
 	}
 	
