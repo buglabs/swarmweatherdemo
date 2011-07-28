@@ -58,8 +58,12 @@ public class Activator implements BundleActivator {
 	
 	private ServiceRegistration sr;
 	private Timer timer;
+	
+	private int i = 0;
 
 	public void start(BundleContext context) throws Exception {
+		
+		
 		//Create the feed
 		final Map<String, String> m = new HashMap<String, String>();
 		
@@ -74,8 +78,10 @@ public class Activator implements BundleActivator {
 			
 			@Override
 			public void run() {
+				i++;
+				
 				m.put("Temperature", "100");
-				m.put("Humidity", "23");
+				m.put("Humidity", i + "");
 				m.put("Wind Direction", "NE");
 				m.put("UserKey", "" + rnd.nextDouble());
 				sr.setProperties(createProperties(MY_FEED_NAME));

@@ -7,20 +7,157 @@ import java.io.IOException;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
  
 public class HelloWorld extends AbstractHandler
 {
+	private final String APIKEY = "cad18f704ecc55eba439121d3046cbcd9a227ba8";
+	private final String SWARMID = "7de223a52dc1e690883fd6cd7cebe86024db3e46";
+	
+	private final String key1 = "00:50:c2:69:c8:29"; //rmb
+	private final String key2 = "00:50:c2:69:c8:2a"; //panda
+	
+	private String temperature;
+	private String humidity;
+	private String windDirection = "why you no work??";
+	
+	private String display1;
+	private String display2;
+	
     public void handle(String target,
                        Request baseRequest,
                        HttpServletRequest request,
                        HttpServletResponse response) 
         throws IOException, ServletException
     {
-        response.setContentType("text/html;charset=utf-8");
+    	doStuff();
+    	
+    	response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
         baseRequest.setHandled(true);
-        response.getWriter().println("<h1>Hello World</h1>");
+        response.getWriter().println("<h1>panda's weather</h1>");
+        response.getWriter().println("<h1>" + display1 + "</h1>");
+        response.getWriter().println("<img src=\"http://farm1.static.flickr.com/45/151498777_2af8148a1f.jpg\">");
+        response.getWriter().println("<h1>rmb's weather</h1>");
+        response.getWriter().println("<h1>" + display2 + "</h1>");
+        /*response.getWriter().println("<h1>Wind Direction :" + windDirection + "</h1>");
+        response.getWriter().println("<h1>Temperature :" + temperature + "</h1>");
+        response.getWriter().println("<h1>Humidity :" + humidity + "</h1>");*/
     }
+    
+    public void doStuff() {
+    	HttpURLConnection connection = null;
+		OutputStreamWriter wr = null;
+		BufferedReader rd  = null;
+		StringBuilder sb = null;
+		String line = null;
+
+		URL serverAddress = null;
+
+		try {
+			serverAddress = new URL("http://bugswarm-test/swarms/" + SWARMID + 
+					"/feeds/my_test_feed");
+			//set up out communications stuff
+			connection = null;
+
+			//Set up the initial connection
+			connection = (HttpURLConnection)serverAddress.openConnection();
+			connection.addRequestProperty("X-BugSwarmApiKey", APIKEY);
+			connection.setRequestMethod("GET");
+			connection.setDoOutput(true);
+			connection.setReadTimeout(10000);
+
+			connection.connect();
+
+			//get the output stream writer and write the output to the server
+			//not needed in this example
+			//wr = new OutputStreamWriter(connection.getOutputStream());
+			//wr.write("");
+			//wr.flush();
+
+			//read the result from the server
+			rd  = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			sb = new StringBuilder();
+
+			while ((line = rd.readLine()) != null)
+			{
+				sb.append(line + '\n');
+			}
+
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			//System.out.println(sb.toString());
+			parseFeed2(sb.toString());
+			System.out.println("Temperature: " + temperature);
+			System.out.println("Wind Direction: " + windDirection);
+			System.out.println("Humidity: " + humidity);
+			
+
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (ProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		finally
+		{
+			//close the connection, set all objects to null
+			connection.disconnect();
+			rd = null;
+			sb = null;
+			wr = null;
+			connection = null;
+		}
+    }
+    
+	public String parseFeed(String feed) {
+		String temp = feed.substring(feed.indexOf("Wind Direction"));
+		temp = temp.substring(17, temp.indexOf("\","));
+		windDirection = temp;
+		//System.out.println(windDirection);
+		
+		temp = feed.substring(feed.indexOf("Temperature"));
+		temp = temp.substring(14, temp.indexOf("\","));
+		temperature = temp;
+		//System.out.println(temperature);
+		
+		temp = feed.substring(feed.indexOf("Humidity"));
+		temp = temp.substring(11, temp.indexOf("\","));
+		humidity = temp;
+		//System.out.println(humidity);
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("Wind Direction: " + windDirection + '\n');
+		sb.append("Temperature: " + temperature + '\n');
+		sb.append("Humidity: " + humidity + '\n');
+		return sb.toString();
+	}
+	
+	public void parseFeed2(String feed) {
+		String one = feed.substring(0, feed.indexOf("UserKey"));
+		String two = feed.substring(feed.indexOf("UserKey"));
+		
+		if (one.indexOf(key1) == -1)
+		{
+			display1 = parseFeed(one);
+			display2 = parseFeed(two);
+		}
+		else
+		{
+			display1 = parseFeed(two);
+			display2 = parseFeed(one);
+		}
+	}
  
     public static void main(String[] args) throws Exception
     {

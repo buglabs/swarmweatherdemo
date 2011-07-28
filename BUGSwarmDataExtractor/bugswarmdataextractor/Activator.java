@@ -15,8 +15,12 @@ import org.osgi.framework.BundleContext;
 
 public class Activator implements BundleActivator {
 	
-	private String APIKEY = "cad18f704ecc55eba439121d3046cbcd9a227ba8";
-	private String SWARMID = "7de223a52dc1e690883fd6cd7cebe86024db3e46";
+	private final String APIKEY = "cad18f704ecc55eba439121d3046cbcd9a227ba8";
+	private final String SWARMID = "7de223a52dc1e690883fd6cd7cebe86024db3e46";
+	
+	private String temperature;
+	private String humidity;
+	private String windDirection;
 	
 	public void start(BundleContext context) throws Exception {
 
@@ -61,7 +65,12 @@ public class Activator implements BundleActivator {
 			System.out.println();
 			System.out.println();
 			System.out.println();
-			System.out.println(sb.toString());
+			//System.out.println(sb.toString());
+			parseFeed(sb.toString());
+			System.out.println("Temperature: " + temperature);
+			System.out.println("Wind Direction: " + windDirection);
+			System.out.println("Humidity: " + humidity);
+			
 
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -80,6 +89,23 @@ public class Activator implements BundleActivator {
 			connection = null;
 		}
 
+	}
+	
+	public void parseFeed(String feed) {
+		String temp = feed.substring(feed.indexOf("Wind Direction"));
+		temp = temp.substring(17, temp.indexOf("\","));
+		windDirection = temp;
+		//System.out.println(windDirection);
+		
+		temp = feed.substring(feed.indexOf("Temperature"));
+		temp = temp.substring(14, temp.indexOf("\","));
+		temperature = temp;
+		//System.out.println(temperature);
+		
+		temp = feed.substring(feed.indexOf("Humidity"));
+		temp = temp.substring(11, temp.indexOf("\","));
+		humidity = temp;
+		//System.out.println(humidity);
 	}
 
 	public void stop(BundleContext context) throws Exception {
