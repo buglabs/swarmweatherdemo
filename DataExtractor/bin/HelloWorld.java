@@ -1,15 +1,9 @@
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
-<<<<<<< HEAD
-
-import java.io.IOException;
-
-=======
  
 import java.io.IOException;
  
->>>>>>> 6e371a18b3fa856f1884e8d6f665ef991c54dfba
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
@@ -22,26 +16,15 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-<<<<<<< HEAD
-
-=======
  
->>>>>>> 6e371a18b3fa856f1884e8d6f665ef991c54dfba
 public class HelloWorld extends AbstractHandler
 {
 	private final String APIKEY = "cad18f704ecc55eba439121d3046cbcd9a227ba8";
 	private final String SWARMID = "7de223a52dc1e690883fd6cd7cebe86024db3e46";
-<<<<<<< HEAD
-
-	private final String key1 = "00:50:c2:69:c8:29"; //rmb
-	private final String key2 = "00:50:c2:69:c8:2a"; //panda
-
-=======
 	
 	private final String key1 = "00:50:c2:69:c8:29"; //rmb
 	private final String key2 = "00:50:c2:69:c8:2a"; //panda
 	
->>>>>>> 6e371a18b3fa856f1884e8d6f665ef991c54dfba
 	private String temperature;
 	private String humidity;
 	private String windDirection;
@@ -50,117 +33,6 @@ public class HelloWorld extends AbstractHandler
 	private String rainfall;
 	private String pressure;
 	private String batlevel;
-<<<<<<< HEAD
-
-	private String json_feed;
-
-	private String display1;
-	private String display2;
-	
-	private String ui_html;
-	
-	public void handle(String target,
-			Request baseRequest,
-			HttpServletRequest request,
-			HttpServletResponse response) 
-	throws IOException, ServletException
-	{
-		if (target.contains("panda"))
-		{
-			doStuff();
-			System.out.println("panda");
-
-			response.setContentType("application/json");
-
-			//response.setContentType("text/html;charset=utf-8");
-			response.setStatus(HttpServletResponse.SC_OK);
-			baseRequest.setHandled(true);
-
-			response.getWriter().println(json_feed);
-			/*        response.getWriter().println("<h1>panda's weather</h1>");
-        response.getWriter().println("<p>" + display1 + "</p>");
-        response.getWriter().println("<img src=\"http://farm1.static.flickr.com/45/151498777_2af8148a1f.jpg\">");
-        response.getWriter().println("<h1>rmb's weather</h1>");
-        response.getWriter().println("<p>" + display2 + "</p>");*/
-		}
-		else if (target.contains("ui"))
-		{
-			System.out.println("ui");
-
-			//response.setContentType("application/json");
-
-			response.setContentType("text/html;charset=utf-8");
-			response.setStatus(HttpServletResponse.SC_OK);
-			baseRequest.setHandled(true);
-
-			//response.getWriter().println(ui_html);
-			
-			StringBuilder panda = new StringBuilder();
-			ClassLoader cl = getClass().getClassLoader();
-			URL url = cl.getResource("index.html");	    
-			BufferedReader in;
-			try {
-				in = new BufferedReader(
-						new InputStreamReader(
-								url.openStream()));
-				String inputLine;
-				while ((inputLine = in.readLine()) != null)
-				panda.append(inputLine);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			response.getWriter().println(panda.toString());
-			
-		}
-		else if (target.contains("helloworld.js"))
-		{
-			System.out.println("helloworld.js");
-			response.setContentType("text/xml");
-			response.setStatus(HttpServletResponse.SC_OK);
-			baseRequest.setHandled(true);
-			StringBuilder panda = new StringBuilder();
-			ClassLoader cl = getClass().getClassLoader();
-			URL url = cl.getResource("helloworld.js");	    
-			BufferedReader in;
-			try {
-				in = new BufferedReader(
-						new InputStreamReader(
-								url.openStream()));
-				String inputLine;
-				while ((inputLine = in.readLine()) != null)
-				panda.append(inputLine);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			response.getWriter().println(panda.toString());
-		}
-		else if (target.contains("google.js"))
-		{
-			System.out.println("google.js");
-			response.setContentType("text/xml");
-			response.setStatus(HttpServletResponse.SC_OK);
-			baseRequest.setHandled(true);
-			StringBuilder panda = new StringBuilder();
-			ClassLoader cl = getClass().getClassLoader();
-			URL url = cl.getResource("google.js");	    
-			BufferedReader in;
-			try {
-				in = new BufferedReader(
-						new InputStreamReader(
-								url.openStream()));
-				String inputLine;
-				while ((inputLine = in.readLine()) != null)
-				panda.append(inputLine);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			response.getWriter().println(panda.toString());
-		}
-	}
-
-	public void doStuff() {
-		HttpURLConnection connection = null;
-=======
 	
 	private String display1;
 	private String display2;
@@ -188,7 +60,6 @@ public class HelloWorld extends AbstractHandler
     
     public void doStuff() {
     	HttpURLConnection connection = null;
->>>>>>> 6e371a18b3fa856f1884e8d6f665ef991c54dfba
 		OutputStreamWriter wr = null;
 		BufferedReader rd  = null;
 		StringBuilder sb = null;
@@ -198,11 +69,7 @@ public class HelloWorld extends AbstractHandler
 
 		try {
 			serverAddress = new URL("http://bugswarm-test/swarms/" + SWARMID + 
-<<<<<<< HEAD
-			"/feeds/my_test_feed");
-=======
 					"/feeds/my_test_feed");
->>>>>>> 6e371a18b3fa856f1884e8d6f665ef991c54dfba
 			//set up out communications stuff
 			connection = null;
 
@@ -229,14 +96,6 @@ public class HelloWorld extends AbstractHandler
 			{
 				sb.append(line + '\n');
 			}
-<<<<<<< HEAD
-			//System.out.println(sb.toString());
-			//parseFeed2(sb.toString());
-			/*System.out.println("Temperature: " + temperature);
-			System.out.println("Wind Direction: " + windDirection);
-			System.out.println("Humidity: " + humidity);*/
-			json_feed = sb.toString();
-=======
 
 			System.out.println();
 			System.out.println();
@@ -247,7 +106,6 @@ public class HelloWorld extends AbstractHandler
 			System.out.println("Wind Direction: " + windDirection);
 			System.out.println("Humidity: " + humidity);*/
 			
->>>>>>> 6e371a18b3fa856f1884e8d6f665ef991c54dfba
 
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -265,86 +123,49 @@ public class HelloWorld extends AbstractHandler
 			wr = null;
 			connection = null;
 		}
-<<<<<<< HEAD
-	}
-
-=======
     }
     
->>>>>>> 6e371a18b3fa856f1884e8d6f665ef991c54dfba
 	public String parseFeed(String feed) {
 		String temp = feed.substring(feed.indexOf("Wind Direction"));
 		temp = temp.substring(17, temp.indexOf("\","));
 		windDirection = temp;
 		//System.out.println(windDirection);
-<<<<<<< HEAD
-
-=======
 		
->>>>>>> 6e371a18b3fa856f1884e8d6f665ef991c54dfba
 		temp = feed.substring(feed.indexOf("Temperature"));
 		temp = temp.substring(14, temp.indexOf("\","));
 		temperature = temp;
 		//System.out.println(temperature);
-<<<<<<< HEAD
-
-=======
 		
->>>>>>> 6e371a18b3fa856f1884e8d6f665ef991c54dfba
 		temp = feed.substring(feed.indexOf("Humidity"));
 		temp = temp.substring(11, temp.indexOf("\","));
 		humidity = temp;
 		//System.out.println(humidity);
-<<<<<<< HEAD
-
-=======
 		
->>>>>>> 6e371a18b3fa856f1884e8d6f665ef991c54dfba
 		temp = feed.substring(feed.indexOf("Wind Speed"));
 		temp = temp.substring(13, temp.indexOf("\","));
 		windSpeed = temp;
 		//System.out.println(windSpeed);
-<<<<<<< HEAD
-
-=======
 		
->>>>>>> 6e371a18b3fa856f1884e8d6f665ef991c54dfba
 		temp = feed.substring(feed.indexOf("Dewpoint"));
 		temp = temp.substring(11, temp.indexOf("\","));
 		dewpoint = temp;
 		//System.out.println(dewpoint);
-<<<<<<< HEAD
-
-=======
 		
->>>>>>> 6e371a18b3fa856f1884e8d6f665ef991c54dfba
 		temp = feed.substring(feed.indexOf("Cumulative rainfall"));
 		temp = temp.substring(22, temp.indexOf("\","));
 		rainfall = temp;
 		//System.out.println(rainfall);
-<<<<<<< HEAD
-
-=======
 		
->>>>>>> 6e371a18b3fa856f1884e8d6f665ef991c54dfba
 		temp = feed.substring(feed.indexOf("Barometric pressure"));
 		temp = temp.substring(22, temp.indexOf("\","));
 		pressure = temp;
 		//System.out.println(pressure);
-<<<<<<< HEAD
-
-=======
 		
->>>>>>> 6e371a18b3fa856f1884e8d6f665ef991c54dfba
 		temp = feed.substring(feed.indexOf("Battery level"));
 		temp = temp.substring(16, temp.indexOf("\","));
 		batlevel = temp;
 		//System.out.println(dewpoint);
-<<<<<<< HEAD
-
-=======
 		
->>>>>>> 6e371a18b3fa856f1884e8d6f665ef991c54dfba
 		StringBuilder sb = new StringBuilder();
 		sb.append("Wind Direction: " + windDirection + '\n');
 		sb.append("Temperature: " + temperature + '\n');
@@ -356,19 +177,11 @@ public class HelloWorld extends AbstractHandler
 		sb.append("Battery level: " + batlevel + '\n');
 		return sb.toString();
 	}
-<<<<<<< HEAD
-
-	public void parseFeed2(String feed) {
-		String one = feed.substring(0, feed.indexOf("UserKey"));
-		String two = feed.substring(feed.indexOf("UserKey"));
-
-=======
 	
 	public void parseFeed2(String feed) {
 		String one = feed.substring(0, feed.indexOf("UserKey"));
 		String two = feed.substring(feed.indexOf("UserKey"));
 		
->>>>>>> 6e371a18b3fa856f1884e8d6f665ef991c54dfba
 		if (one.indexOf(key1) == -1)
 		{
 			display1 = parseFeed(one);
@@ -380,18 +193,6 @@ public class HelloWorld extends AbstractHandler
 			display2 = parseFeed(one);
 		}
 	}
-<<<<<<< HEAD
-
-	public static void main(String[] args) throws Exception
-	{
-		Server server = new Server(8080);
-		server.setHandler(new HelloWorld());
-
-		server.start();
-		server.join();
-	}
-}
-=======
  
     public static void main(String[] args) throws Exception
     {
@@ -402,4 +203,3 @@ public class HelloWorld extends AbstractHandler
         server.join();
     }
 }
->>>>>>> 6e371a18b3fa856f1884e8d6f665ef991c54dfba
