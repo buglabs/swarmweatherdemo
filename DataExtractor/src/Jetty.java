@@ -16,23 +16,24 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.ParseException;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class Jetty extends AbstractHandler
 {
 	private final String APIKEY = "cad18f704ecc55eba439121d3046cbcd9a227ba8";
 	private final String SWARMID = "7de223a52dc1e690883fd6cd7cebe86024db3e46";
 
-	private final String key1 = "00:50:c2:69:c8:29"; //rmb
-	private final String key2 = "00:50:c2:69:c8:2a"; //panda
 
-	private String temperature;
-	private String humidity;
-	private String windDirection;
-	private String windSpeed;
-	private String dewpoint;
-	private String rainfall;
-	private String pressure;
-	private String batlevel;
+	
+	private static Connection conn;
+
 
 	private String json_feed;
 
@@ -51,7 +52,7 @@ public class Jetty extends AbstractHandler
 		{
 			doStuff();
 			System.out.println("panda");
-
+			
 			response.setContentType("application/json");
 
 			//response.setContentType("text/html;charset=utf-8");
@@ -59,6 +60,32 @@ public class Jetty extends AbstractHandler
 			baseRequest.setHandled(true);
 
 			response.getWriter().println(json_feed);
+			JSONArray json = null;
+			try {
+				json = new JSONArray(json_feed);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+			JSONObject rmb = json.getJSONObject(0);
+			JSONObject panda = json.getJSONObject(1);
+			JSONObject ron = json.getJSONObject(2);
+
+			try {
+				sqlUpdate(conn, parseFeed(rmb,"rmb"), "rmb");
+				sqlUpdate(conn, parseFeed(panda,"panda"), "panda");
+				sqlUpdate(conn, parseFeed(ron,"ron"), "ron");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			
+			
+			
 			/*        response.getWriter().println("<h1>panda's weather</h1>");
         response.getWriter().println("<p>" + display1 + "</p>");
         response.getWriter().println("<img src=\"http://farm1.static.flickr.com/45/151498777_2af8148a1f.jpg\">");
@@ -203,80 +230,68 @@ public class Jetty extends AbstractHandler
 		}
 	}
 
-	public String parseFeed(String feed) {
-		String temp = feed.substring(feed.indexOf("Wind Direction"));
-		temp = temp.substring(17, temp.indexOf("\","));
-		windDirection = temp;
-		//System.out.println(windDirection);
+	public String parseFeed(JSONObject bug, String name) {
+		String macaddress = bug.getJSONObject("resource").getString("id");
+		JSONObject feed = bug.getJSONObject("payload").getJSONObject("my_test_feed");
+		String currBatt = feed.getString("currBatt");
+		String currTemp = feed.getString("currTemp");
+		String currHumid = feed.getString("currHumid");
+		String currWinddir = feed.getString("currWinddir");
+		String currRain = feed.getString("currRain");
+		String currBPressure = feed.getString("currBPressure");
+		String currTime = feed.getString("currTime");
+		String currWindspd = feed.getString("currWindspd");
+		String currDew = feed.getString("currDew");
+		String currLight = feed.getString("currLight");
+		
+		return "INSERT INTO " + name +" (currTemp, currHumid, currDew, currBPressure, currLight, " +
+		"currWindspd, currWinddir, currRain, currBatt, currTime) values ("+currTemp + ", " + currHumid + ", " + currDew + ", " 
+		+ currBPressure + ", " + currLight + ", " + currWindspd + ", " +  currWinddir + ", " + currRain + ", " + currBatt+  ", " + currTime+")"; 
 
-		temp = feed.substring(feed.indexOf("Temperature"));
-		temp = temp.substring(14, temp.indexOf("\","));
-		temperature = temp;
-		//System.out.println(temperature);
-
-		temp = feed.substring(feed.indexOf("Humidity"));
-		temp = temp.substring(11, temp.indexOf("\","));
-		humidity = temp;
-		//System.out.println(humidity);
-
-		temp = feed.substring(feed.indexOf("Wind Speed"));
-		temp = temp.substring(13, temp.indexOf("\","));
-		windSpeed = temp;
-		//System.out.println(windSpeed);
-
-		temp = feed.substring(feed.indexOf("Dewpoint"));
-		temp = temp.substring(11, temp.indexOf("\","));
-		dewpoint = temp;
-		//System.out.println(dewpoint);
-
-		temp = feed.substring(feed.indexOf("Cumulative rainfall"));
-		temp = temp.substring(22, temp.indexOf("\","));
-		rainfall = temp;
-		//System.out.println(rainfall);
-
-		temp = feed.substring(feed.indexOf("Barometric pressure"));
-		temp = temp.substring(22, temp.indexOf("\","));
-		pressure = temp;
-		//System.out.println(pressure);
-
-		temp = feed.substring(feed.indexOf("Battery level"));
-		temp = temp.substring(16, temp.indexOf("\","));
-		batlevel = temp;
-		//System.out.println(dewpoint);
-
-		StringBuilder sb = new StringBuilder();
-		sb.append("Wind Direction: " + windDirection + '\n');
-		sb.append("Temperature: " + temperature + '\n');
-		sb.append("Humidity: " + humidity + '\n');
-		sb.append("Wind Speed: " + windSpeed + '\n');
-		sb.append("Dewpoint: " + dewpoint + '\n');
-		sb.append("Cumulative rainfall: " + rainfall + '\n');
-		sb.append("Barometric pressure: " + pressure + '\n');
-		sb.append("Battery level: " + batlevel + '\n');
-		return sb.toString();
 	}
-
-	public void parseFeed2(String feed) {
-		String one = feed.substring(0, feed.indexOf("UserKey"));
-		String two = feed.substring(feed.indexOf("UserKey"));
-
-		if (one.indexOf(key1) == -1)
-		{
-			display1 = parseFeed(one);
-			display2 = parseFeed(two);
-		}
-		else
-		{
-			display1 = parseFeed(two);
-			display2 = parseFeed(one);
-		}
+	public String parseMAC(JSONObject bug){
+		return bug.getJSONObject("resource").getString("id");
 	}
-
+	public static Connection sqlConnect(){
+		System.out.println("MySQL Connect Example.");
+		Connection conn = null;
+		String url = "jdbc:mysql://localhost:3306/";
+		String dbName = "weather";
+		String driver = "com.mysql.jdbc.Driver";
+		String userName = "root"; 
+		String password = "root";
+		
+		try {
+			Class.forName(driver).newInstance();
+			conn = DriverManager.getConnection(url+dbName,userName,password);
+			Statement stmt = conn.createStatement();
+			
+			return conn;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+	public void sqlUpdate(Connection conn,String insert, String macaddress) throws SQLException{
+		Statement stmt = conn.createStatement();
+		String create = "CREATE TABLE IF NOT EXISTS "+ macaddress + " (currTemp VARCHAR(50), currHumid VARCHAR(50), " +
+		"currDew VARCHAR(50), currBPressure VARCHAR(50), currLight VARCHAR(50), currWindspd VARCHAR(50), " +
+		"currWinddir VARCHAR(50), currRain VARCHAR(50), currBatt VARCHAR(50), currTime VARCHAR(50))";
+		stmt.executeUpdate(create);
+		stmt = conn.createStatement();
+		
+		System.out.println(insert);
+		stmt.executeUpdate(insert);
+	}
+	
 	public static void main(String[] args) throws Exception
 	{
 		Server server = new Server(8080);
 		server.setHandler(new Jetty());
-
+		
+		conn = sqlConnect();
+		
 		server.start();
 		server.join();
 	}
