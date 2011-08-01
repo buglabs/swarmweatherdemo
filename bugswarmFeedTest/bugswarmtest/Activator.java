@@ -69,7 +69,7 @@ public class Activator implements BundleActivator {
 		IButtonEventProvider.class.getName(),
 	};	
 	
-	private int i = 0; //pandatest
+	private int i = 0;
 	
 	public void start(BundleContext context) throws Exception {
 		//Create the feed
@@ -88,16 +88,17 @@ public class Activator implements BundleActivator {
 			
 			@Override
 			public void run() {
-				i++; //pandatest
-				m.put("Temperature", app.currTemp);
-				m.put("Humidity", app.currHumid);
-				m.put("Wind Direction", app.currWinddir);
-				m.put("Wind Speed", app.currWindspd);
-				m.put("Dewpoint", app.currDew);
-				//m.put("Cumulative rainfall", app.currRain);
-				m.put("Cumulative rainfall", i + ""); //pandatest
-				m.put("Barometric pressure", app.currBPressure);
-				m.put("Battery level",app.currBatt);
+				i++;
+				m.put("currTemp", app.currTemp);
+				m.put("currHumid", app.currHumid);
+				m.put("currWinddir", app.currWinddir);
+				m.put("currWindspd", app.currWindspd);
+				m.put("currDew", app.currDew);
+				//m.put("currRain", app.currRain);
+				m.put("currRain", i + "");
+				m.put("currBPressure", app.currBPressure);
+				m.put("currBatt",app.currBatt);
+				m.put("currTime", Long.toString(System.currentTimeMillis()));
 				m.put("UserKey", "" + rnd.nextDouble());
 				sr.setProperties(createProperties(MY_FEED_NAME));
 			}

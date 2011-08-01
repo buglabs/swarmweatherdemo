@@ -5,8 +5,8 @@ public class mySQL{
 	public static void main(String[] args) {
 		System.out.println("MySQL Connect Example.");
 		Connection conn = null;
-		String url = "jdbc:mysql://192.168.0.226:3306/";
-		String dbName = "swarmtest";
+		String url = "jdbc:mysql://localhost:3306/";
+		String dbName = "weather";
 		String driver = "com.mysql.jdbc.Driver";
 		String userName = "root"; 
 		String password = "root";
