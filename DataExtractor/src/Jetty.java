@@ -133,9 +133,11 @@ public class Jetty extends AbstractHandler
 				String inputLine;
 				while ((inputLine = in.readLine()) != null)
 				panda.append(inputLine);
+				System.out.println("panda");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			System.out.println(panda.toString());
 			response.getWriter().println(panda.toString());
 		}
 	}
