@@ -31,7 +31,7 @@ public class Jetty extends AbstractHandler
 	private final String SWARMID = "7de223a52dc1e690883fd6cd7cebe86024db3e46";
 
 
-	
+
 	private static Connection conn;
 
 
@@ -39,9 +39,9 @@ public class Jetty extends AbstractHandler
 
 	private String display1;
 	private String display2;
-	
+
 	private String ui_html;
-	
+
 	public void handle(String target,
 			Request baseRequest,
 			HttpServletRequest request,
@@ -52,7 +52,7 @@ public class Jetty extends AbstractHandler
 		{
 			doStuff();
 			System.out.println("panda");
-			
+
 			response.setContentType("application/json");
 
 			//response.setContentType("text/html;charset=utf-8");
@@ -67,7 +67,7 @@ public class Jetty extends AbstractHandler
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 
 			JSONObject rmb = json.getJSONObject(0);
 			JSONObject panda = json.getJSONObject(1);
@@ -81,16 +81,16 @@ public class Jetty extends AbstractHandler
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-		
-			
-			
-			
-			/*        response.getWriter().println("<h1>panda's weather</h1>");
-        response.getWriter().println("<p>" + display1 + "</p>");
-        response.getWriter().println("<img src=\"http://farm1.static.flickr.com/45/151498777_2af8148a1f.jpg\">");
-        response.getWriter().println("<h1>rmb's weather</h1>");
-        response.getWriter().println("<p>" + display2 + "</p>");*/
+
+
+
+
+
+			response.getWriter().println("<h1>panda's weather</h1>");
+			response.getWriter().println("<p>" + display1 + "</p>");
+			response.getWriter().println("<img src=\"http://farm1.static.flickr.com/45/151498777_2af8148a1f.jpg\">");
+			response.getWriter().println("<h1>rmb's weather</h1>");
+			response.getWriter().println("<p>" + display2 + "</p>");
 		}
 		else if (target.contains("ui"))
 		{
@@ -103,7 +103,7 @@ public class Jetty extends AbstractHandler
 			baseRequest.setHandled(true);
 
 			//response.getWriter().println(ui_html);
-			
+
 			StringBuilder panda = new StringBuilder();
 			ClassLoader cl = getClass().getClassLoader();
 			URL url = cl.getResource("index.html");	    
@@ -114,12 +114,12 @@ public class Jetty extends AbstractHandler
 								url.openStream()));
 				String inputLine;
 				while ((inputLine = in.readLine()) != null)
-				panda.append(inputLine);
+					panda.append(inputLine);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			response.getWriter().println(panda.toString());
-			
+
 		}
 		else if (target.contains("helloworld.js"))
 		{
@@ -137,7 +137,7 @@ public class Jetty extends AbstractHandler
 								url.openStream()));
 				String inputLine;
 				while ((inputLine = in.readLine()) != null)
-				panda.append(inputLine);
+					panda.append(inputLine);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -159,7 +159,7 @@ public class Jetty extends AbstractHandler
 								url.openStream()));
 				String inputLine;
 				while ((inputLine = in.readLine()) != null)
-				panda.append(inputLine);
+					panda.append(inputLine);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -205,11 +205,7 @@ public class Jetty extends AbstractHandler
 			{
 				sb.append(line + '\n');
 			}
-			//System.out.println(sb.toString());
-			//parseFeed2(sb.toString());
-			/*System.out.println("Temperature: " + temperature);
-			System.out.println("Wind Direction: " + windDirection);
-			System.out.println("Humidity: " + humidity);*/
+
 			json_feed = sb.toString();
 
 		} catch (MalformedURLException e) {
@@ -231,7 +227,6 @@ public class Jetty extends AbstractHandler
 	}
 
 	public String parseFeed(JSONObject bug, String name) {
-		String macaddress = bug.getJSONObject("resource").getString("id");
 		JSONObject feed = bug.getJSONObject("payload").getJSONObject("my_test_feed");
 		String currBatt = feed.getString("currBatt");
 		String currTemp = feed.getString("currTemp");
@@ -243,15 +238,13 @@ public class Jetty extends AbstractHandler
 		String currWindspd = feed.getString("currWindspd");
 		String currDew = feed.getString("currDew");
 		String currLight = feed.getString("currLight");
-		
+
 		return "INSERT INTO " + name +" (currTemp, currHumid, currDew, currBPressure, currLight, " +
 		"currWindspd, currWinddir, currRain, currBatt, currTime) values ("+currTemp + ", " + currHumid + ", " + currDew + ", " 
 		+ currBPressure + ", " + currLight + ", " + currWindspd + ", " +  currWinddir + ", " + currRain + ", " + currBatt+  ", " + currTime+")"; 
 
 	}
-	public String parseMAC(JSONObject bug){
-		return bug.getJSONObject("resource").getString("id");
-	}
+	
 	public static Connection sqlConnect(){
 		System.out.println("MySQL Connect Example.");
 		Connection conn = null;
@@ -260,18 +253,17 @@ public class Jetty extends AbstractHandler
 		String driver = "com.mysql.jdbc.Driver";
 		String userName = "root"; 
 		String password = "root";
-		
+
 		try {
 			Class.forName(driver).newInstance();
 			conn = DriverManager.getConnection(url+dbName,userName,password);
-			Statement stmt = conn.createStatement();
-			
+
 			return conn;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
-		
+
 	}
 	public void sqlUpdate(Connection conn,String insert, String macaddress) throws SQLException{
 		Statement stmt = conn.createStatement();
@@ -280,18 +272,18 @@ public class Jetty extends AbstractHandler
 		"currWinddir VARCHAR(50), currRain VARCHAR(50), currBatt VARCHAR(50), currTime VARCHAR(50))";
 		stmt.executeUpdate(create);
 		stmt = conn.createStatement();
-		
+
 		System.out.println(insert);
 		stmt.executeUpdate(insert);
 	}
-	
+
 	public static void main(String[] args) throws Exception
 	{
 		Server server = new Server(8080);
 		server.setHandler(new Jetty());
-		
+
 		conn = sqlConnect();
-		
+
 		server.start();
 		server.join();
 	}

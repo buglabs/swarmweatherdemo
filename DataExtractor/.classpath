@@ -2,14 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-<<<<<<< HEAD
-	<classpathentry kind="lib" path="/home/rmb/bug/weather/swarmweatherdemo/Demo/jetty-all-7.0.2.v20100331.jar"/>
-	<classpathentry kind="lib" path="/home/rmb/bug/weather/swarmweatherdemo/Demo/servlet-api-2.5.jar"/>
-	<classpathentry kind="lib" path="/home/rmb/bug/weather/swarmweatherdemo/DataExtractor/json-rpc-1.0.jar"/>
+	<classpathentry kind="lib" path="/home/rmb/bug/weather/DataExtractor/jetty-all-7.0.2.v20100331.jar"/>
+	<classpathentry kind="lib" path="/home/rmb/bug/weather/DataExtractor/json-rpc-1.0.jar"/>
+	<classpathentry kind="lib" path="/home/rmb/bug/weather/DataExtractor/servlet-api-2.5.jar"/>
 	<classpathentry kind="lib" path="/home/rmb/Documents/mysql-connector-java-5.1.17-bin.jar"/>
-=======
-	<classpathentry kind="lib" path="/home/panda/Documents/swarmweather/swarmweatherdemo/DataExtractor/src/servlet-api-2.5.jar"/>
-	<classpathentry kind="lib" path="/home/panda/Documents/swarmweather/swarmweatherdemo/DataExtractor/src/jetty-all-7.0.2.v20100331.jar"/>
->>>>>>> 7da6a2bc45f9548165783561a24b7af3b851bd2f
 	<classpathentry kind="output" path="bin"/>
 </classpath>
