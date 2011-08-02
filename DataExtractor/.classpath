@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="/home/rmb/bug/weather/DataExtractor/jetty-all-7.0.2.v20100331.jar"/>
-	<classpathentry kind="lib" path="/home/rmb/bug/weather/DataExtractor/json-rpc-1.0.jar"/>
-	<classpathentry kind="lib" path="/home/rmb/bug/weather/DataExtractor/servlet-api-2.5.jar"/>
-	<classpathentry kind="lib" path="/home/rmb/Documents/mysql-connector-java-5.1.17-bin.jar"/>
-
+	<classpathentry kind="lib" path="/home/panda/Documents/swarmweather/swarmweatherdemo/DataExtractor/json-rpc-1.0.jar"/>
+	<classpathentry kind="lib" path="/home/panda/Downloads/mysql-connector-java-5.1.17/mysql-connector-java-5.1.17-bin.jar"/>
+	<classpathentry kind="lib" path="/home/panda/Documents/swarmweather/swarmweatherdemo/DataExtractor/bin/servlet-api-2.5.jar"/>
+	<classpathentry kind="lib" path="/home/panda/Documents/swarmweather/swarmweatherdemo/DataExtractor/bin/jetty-all-7.0.2.v20100331.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

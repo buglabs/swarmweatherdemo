@@ -60,7 +60,7 @@ public class Jetty extends AbstractHandler
 			baseRequest.setHandled(true);
 
 			response.getWriter().println(json_feed);
-			JSONArray json = null;
+/*			JSONArray json = null;
 			try {
 				json = new JSONArray(json_feed);
 			} catch (ParseException e) {
@@ -80,17 +80,7 @@ public class Jetty extends AbstractHandler
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-
-
-
-
-
-			response.getWriter().println("<h1>panda's weather</h1>");
-			response.getWriter().println("<p>" + display1 + "</p>");
-			response.getWriter().println("<img src=\"http://farm1.static.flickr.com/45/151498777_2af8148a1f.jpg\">");
-			response.getWriter().println("<h1>rmb's weather</h1>");
-			response.getWriter().println("<p>" + display2 + "</p>");
+			}*/
 		}
 		else if (target.contains("ui"))
 		{
@@ -174,7 +164,6 @@ public class Jetty extends AbstractHandler
 
 	public void doStuff() {
 		HttpURLConnection connection = null;
-		OutputStreamWriter wr = null;
 		BufferedReader rd  = null;
 		StringBuilder sb = null;
 		String line = null;
@@ -226,7 +215,6 @@ public class Jetty extends AbstractHandler
 			connection.disconnect();
 			rd = null;
 			sb = null;
-			wr = null;
 			connection = null;
 		}
 	}
