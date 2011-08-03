@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+ "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <script type="text/javascript" src="google.js"></script>
+<script type="text/javascript" src="helloworld.js"></script>
+    <script type="text/javascript">
+      google.load('visualization', '1.0', {'packages':['corechart']});
+      google.setOnLoadCallback(drawVisualization);
+
+      function drawVisualization() {
+
+
+	var data = new google.visualization.DataTable();
+	data.addColumn('number', 'panda');
+	data.addColumn('number', 'rmb');
+	data.addColumn('number', 'ronano');
+	data.addRow([75, 75, 75]);
+
+	var hdata = new google.visualization.DataTable();
+	hdata.addColumn('number', 'panda');
+	hdata.addColumn('number', 'rmb');
+	hdata.addColumn('number', 'ronano');
+	hdata.addRow([30, 30, 30]);
+ 
+	new google.visualization.LineChart(document.getElementById('visualization')).
+      		draw(data, {curveType: "function",
+                  	width: 500, height: 400, title: "Temperature",
+                  	vAxis: {maxValue: 10}});
+
+	new google.visualization.LineChart(document.getElementById('humidity')).
+      		draw(hdata, {curveType: "function",
+                  	width: 500, height: 400, title: "Humidity",
+                  	vAxis: {maxValue: 10}});
+	
+	setTimeout(update, 5000, data, hdata);
+}
+
+function update(data, hdata) {
+
+	var req = new XMLHttpRequest();
+	req.open('GET', '/panda', false);
+	req.send(null);
+
+	var panda = 0;
+	var rmb = 0;
+	var ronano = 0;
+
+	var hpanda = 0;
+	var hrmb = 0;
+	var hronano = 0;
+
+	if(req.status == 200)
+	{
+	var jsonweather = eval('(' + req.responseText + ')');
+
+	for(var i=0;i<jsonweather.length;i++){
+	if (jsonweather[i].resource.id == "00:50:c2:69:c8:29")
+	{
+		rmb = parseInt(jsonweather[i].payload.my_test_feed.currTemp);
+		hrmb = parseInt(jsonweather[i].payload.my_test_feed.currHumid);
+	}
+	if (jsonweather[i].resource.id == "00:50:c2:69:c8:2a")
+	{
+		panda = parseInt(jsonweather[i].payload.my_test_feed.currTemp);
+		hpanda = parseInt(jsonweather[i].payload.my_test_feed.currHumid);
+	
+	}
+	if (jsonweather[i].resource.id == "00:50:c2:69:c8:08")
+	{
+		ronano = parseInt(jsonweather[i].payload.my_test_feed.currTemp); 
+		hronano = parseInt(jsonweather[i].payload.my_test_feed.currHumid); 
+	}	
+	}
+
+	}
+	else alert("badpanda");
+
+	console.log (panda + " " + rmb + " " + ronano);
+	console.log (hpanda + " " + hrmb + " " + hronano);
+
+
+
+
+	data.addRow([panda, rmb, ronano]);
+	hdata.addRow([hpanda, hrmb, hronano]);
+  	new google.visualization.LineChart(document.getElementById('visualization')).
+      		draw(data, {curveType: "function",
+                  	width: 500, height: 400, title: "Temperature",
+                  	vAxis: {maxValue: 10}});
+	new google.visualization.LineChart(document.getElementById('humidity')).
+      		draw(hdata, {curveType: "function",
+                  	width: 500, height: 400, title: "Humidity",
+                  	vAxis: {maxValue: 10}});
+
+	setTimeout(update, 5000, data, hdata);
+}
+    </script>
+
+</head>
+<body>
+<p id="hello"></p>
+
+<table>
+<tr>
+<td>
+<div id="humidity" style="width:400; height:300"></div>
+</td>
+<td>
+<div id="visualization" style="width:400; height:300"></div>
+</td>
+</tr>
+</table>
+
+
+
+<table>
+<tr>
+<td>
+<p>rmb's Weather</p>
+<p id="00:50:c2:69:c8:29"></p>
+</td>
+<td>
+<p>ronano's Weather</p>
+<p id="00:50:c2:69:c8:08"></p>
+</td>
+<td>
+<p>panda's (better) Weather</p>
+<p id="00:50:c2:69:c8:2a"></p>
+</td>
+</tr>
+</table>
+
+
+<div style="text-align: center;">
+<img src="http://2.bp.blogspot.com/_mDE45kXCXoQ/TLr29PVUwVI/AAAAAAAAAZM/PBO6KoUmVBY/s1600/panda+brothers.jpg">
+</div>
+
+</body>
+</html>
