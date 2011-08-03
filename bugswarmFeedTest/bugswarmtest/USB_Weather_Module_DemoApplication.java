@@ -38,14 +38,14 @@ import com.buglabs.util.XmlNode;
  * @author vish
  */
 public class USB_Weather_Module_DemoApplication implements
-		ManagedInlineRunnable, PublicWSProvider2 {
+ManagedInlineRunnable, PublicWSProvider2 {
 
 	private BundleContext theContext ;
 	private Timer timer;
 	private static int timerPeriod = 5000;
-		
+
 	private ServiceRegistration webServiceReg ;
-	
+
 	private SerialPort serialPort;
 	private InputStream serialIn;
 	private OutputStream serialOut;
@@ -56,16 +56,16 @@ public class USB_Weather_Module_DemoApplication implements
 
 	private boolean serialConnected;
 	private boolean isStarted ;
-	
-//	public String currHumidity;
-//	public String currTempC;
-//	public String currTempF;
-//	public String currTempFSCP;
-//	public String currBPressure;
-//	public String currLight;
-//	public String currSample;
-	
-	/*
+
+	//	public String currHumidity;
+	//	public String currTempC;
+	//	public String currTempF;
+	//	public String currTempFSCP;
+	//	public String currBPressure;
+	//	public String currLight;
+	//	public String currSample;
+
+/*
 	public String currTemp;
 	public String currHumid;
 	public String currDew;
@@ -75,8 +75,8 @@ public class USB_Weather_Module_DemoApplication implements
 	public String currWinddir;
 	public String currRain;
 	public String currBatt;
-	*/
-	
+
+	hardcodevalues!*/
 	public final String currTemp = "70";
 	public final String currHumid = "70";
 	public final String currDew = "70";
@@ -86,29 +86,30 @@ public class USB_Weather_Module_DemoApplication implements
 	public final String currWinddir = "70";
 	public final String currRain = "70";
 	public final String currBatt = "70";
-	
+	 
 	public USB_Weather_Module_DemoApplication(BundleContext context) {
 		theContext = context ;
 	}
 
 	public void run(Map<Object, Object> services) {
-		
+
 		webServiceReg = theContext.registerService(PublicWSProvider2.class.getName(), this, null);
-		
+	}
+	/*	
 		IButtonEventProvider ibuttoneventprovider = (IButtonEventProvider) services
 				.get(IButtonEventProvider.class.getName());
 
 		serialConnected = false;
 		isStarted = false ;
-		
-		//timer = new Timer();
-		//timer.schedule(new TimerTask() {
-			/*
+
+		timer = new Timer();
+		timer.schedule(new TimerTask() {
+
 			public void run() {
 
 				try {
 
-					/* Test if USB WeatherBoard is detected 
+					///* Test if USB WeatherBoard is detected 
 					Process p;
 					p = Runtime.getRuntime().exec(
 							new String[] { "/bin/sh", "-c",
@@ -154,8 +155,8 @@ public class USB_Weather_Module_DemoApplication implements
 				}
 			}
 
-		}, 0, timerPeriod);*/
-		
+		}, 0, timerPeriod);
+
 	}
 
 	private void initWeatherBoard() {
@@ -193,8 +194,7 @@ public class USB_Weather_Module_DemoApplication implements
 
 	}
 
-	/* Thread to receive weather sensor data from serial port, sampling at 1 Hz */
-	/*
+	///* Thread to receive weather sensor data from serial port, sampling at 1 Hz 
 	private void startWeatherWatcher() {
 		this.isStarted = true ;
 		timer.schedule(new TimerTask() {
@@ -218,13 +218,13 @@ public class USB_Weather_Module_DemoApplication implements
 						}
 						Thread.sleep(100);
 					}
-					
-//					System.out.println("Unparsed: " + strIn);
-					
-					/*Parse raw data from sensor in to human-readable form.
-					 *  Unparsed, looks like:
-					 *  #18.10,077.20,025.5,077.98,100407,1018,0,015138$ 
-					 
+
+					System.out.println("Unparsed: " + strIn);
+
+			//		Parse raw data from sensor in to human-readable form.
+				//	 *  Unparsed, looks like:
+				//	 *  #18.10,077.20,025.5,077.98,100407,1018,0,015138$ 
+		//			 
 //					String substring ;
 //					substring = strIn.substring(strIn.indexOf('#') + 1);
 //					String[] dataElements = substring.split(",");
@@ -243,13 +243,13 @@ public class USB_Weather_Module_DemoApplication implements
 //					currLight = dataElements[5];
 //					System.out.println("sample number - " + dataElements[7].split("$")[0]);
 //					currSample = dataElements[7].split("$")[0] ;
-					
-					
+
+
 					//  $,27.9,47,15.6,1221.71,0.8,0.0,-1,0.0,0.00,*
 					String substring ;
 //					substring = strIn.substring(strIn.indexOf('$') + 1);
 					String[] dataElements = strIn.split(",");
-					
+					System.out.println(strIn);
 					System.out.println("Temperature: " + dataElements[1] + "C") ;
 					currTemp = dataElements[1];
 					System.out.println("Humidity: " + dataElements[2] + "%");
@@ -268,7 +268,7 @@ public class USB_Weather_Module_DemoApplication implements
 					currRain = dataElements[8];
 					System.out.println("Battery Level (0 if USB): " + dataElements[9] + "volts");
 					currBatt = dataElements[9] ;
-					
+
 				} catch (IOException e) {
 					e.printStackTrace();
 				} catch (InterruptedException e) {
@@ -283,17 +283,17 @@ public class USB_Weather_Module_DemoApplication implements
 				timer.cancel();
 				isStarted = false ;
 			}
-			
+
 		}, 0, 1000); 
 
-	}*/
+	}
 
 	public void shutdown() {
 
 	}
-
+	 */
 	private String serviceName = "WeatherData";
-	
+
 	public void setPublicName(String name) {
 		serviceName = name;
 	}
@@ -317,7 +317,7 @@ public class USB_Weather_Module_DemoApplication implements
 
 	public IWSResponse execute(int operation, String input) {
 		if (operation == PublicWSProvider2.GET) {
-			
+
 			return new WSResponse(getWeatherXml(), "text/xml");
 		}
 		return null;
@@ -333,29 +333,29 @@ public class USB_Weather_Module_DemoApplication implements
 		return "Returns data received from USB Serial Port";
 	}
 
-	
+
 	private Object getWeatherXml() {
 		XmlNode root = new XmlNode("SerialData");
-			//gpio.  style = <GPIO>
-			//                <Pin number="0">0</Pin>
-			// 			      <Pin number="1">0</Pin> ...
-			XmlNode gpio = new XmlNode("WeatherBoard");
-			try {
-			
+		//gpio.  style = <GPIO>
+		//                <Pin number="0">0</Pin>
+		// 			      <Pin number="1">0</Pin> ...
+		XmlNode gpio = new XmlNode("WeatherBoard");
+		try {
+
 			XmlNode pin0 = new XmlNode("Sensor", currHumid);
 			XmlNode pin1 = new XmlNode("Sensor", currTemp);
 			XmlNode pin2 = new XmlNode("Sensor", currDew);
 			XmlNode pin3 = new XmlNode("Sensor", currBatt);
 			XmlNode pin4 = new XmlNode("Sensor", currBPressure);
 			XmlNode pin5 = new XmlNode("Sensor", currLight);
-			
+
 			pin0.addAttribute("type", "RelHumidity");
 			pin1.addAttribute("type", "Temperature");
 			pin2.addAttribute("type", "DewPoint");
 			pin3.addAttribute("type", "BattLevel");
 			pin4.addAttribute("type", "BaromPressure");
 			pin5.addAttribute("type", "AmbientLight");
-			
+
 			pin0.addAttribute("unit", "%");
 			pin1.addAttribute("unit", "C");
 			pin2.addAttribute("unit", "C");
@@ -369,13 +369,19 @@ public class USB_Weather_Module_DemoApplication implements
 			gpio.addChildElement(pin4);
 			gpio.addChildElement(pin5);
 			root.addChildElement(gpio);
-			} catch (SelfReferenceException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}catch (IOException e) {
-				e.printStackTrace();
-			}
-			return root.toString();
+		} catch (SelfReferenceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+		return root.toString();
+	}
+
+	@Override
+	public void shutdown() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

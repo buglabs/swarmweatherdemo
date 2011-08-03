@@ -68,9 +68,6 @@ public class Activator implements BundleActivator {
 	private static final String [] services = {		
 		IButtonEventProvider.class.getName(),
 	};	
-	
-	private int i = 0;
-	
 	public void start(BundleContext context) throws Exception {
 		//Create the feed
 		final Map<String, String> m = new HashMap<String, String>();
@@ -86,18 +83,20 @@ public class Activator implements BundleActivator {
 		final Random rnd = new Random();
 		timer.schedule(new TimerTask() {
 			
+		int i = 0;	
 			@Override
 			public void run() {
+				//m.put("currTemp", app.currTemp);
 				i++;
-				m.put("currTemp", app.currTemp);
+				m.put("currTemp", i + "");
 				m.put("currHumid", app.currHumid);
 				m.put("currWinddir", app.currWinddir);
 				m.put("currWindspd", app.currWindspd);
 				m.put("currDew", app.currDew);
-				//m.put("currRain", app.currRain);
-				m.put("currRain", i + "");
+				m.put("currRain", app.currRain);
 				m.put("currBPressure", app.currBPressure);
 				m.put("currBatt",app.currBatt);
+				m.put("currLight", app.currLight);
 				m.put("currTime", Long.toString(System.currentTimeMillis()));
 				m.put("UserKey", "" + rnd.nextDouble());
 				sr.setProperties(createProperties(MY_FEED_NAME));

@@ -19,9 +19,11 @@ if(req.status == 200)
 		"Rainfall: " + jsonweather[i].payload.my_test_feed.currRain + "\n" +
 		"Barometric Pressure: " + jsonweather[i].payload.my_test_feed.currBPressure + "\n" +
 		"Battery Level: " + jsonweather[i].payload.my_test_feed.currBatt + "\n" +
-		"Humidity: " + jsonweather[i].payload.my_test_feed.currHumid + "\n";} 
+		"Humidity: " + jsonweather[i].payload.my_test_feed.currHumid + "\n";
 }
-else {alert("bad");}
+else alert("bad");
+
+}
 t=setTimeout("start()",5000);
 }
 window.onload = start;

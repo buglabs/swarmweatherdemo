@@ -32,7 +32,7 @@
       		draw(hdata, {curveType: "function",
                   	width: 500, height: 400, title: "Humidity",
                   	vAxis: {maxValue: 10}});
-	
+
 	setTimeout(update, 5000, data, hdata);
 }
 
@@ -64,7 +64,7 @@ function update(data, hdata) {
 	{
 		panda = parseInt(jsonweather[i].payload.my_test_feed.currTemp);
 		hpanda = parseInt(jsonweather[i].payload.my_test_feed.currHumid);
-	
+
 	}
 	if (jsonweather[i].resource.id == "00:50:c2:69:c8:08")
 	{
