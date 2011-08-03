@@ -2,41 +2,108 @@
  "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-    <script type="text/javascript" src="google.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript" src="helloworld.js"></script>
     <script type="text/javascript">
       google.load('visualization', '1.0', {'packages':['corechart']});
       google.setOnLoadCallback(drawVisualization);
 
+	var t;
+
+	var data;
+	var hdata;
+
+	var temp = new Boolean();
+	var humid = new Boolean();
+
+	temp = true;
+	humid = false;
+
+	var temp_visual;
+	var humid_visual;
+
+	function getSelectedValue(){
+		var choice = document.getElementById('choice').value;
+		if(choice=="temp"){
+			temp=true;
+			humid=false;
+			temp_visual = new google.visualization.LineChart(document.getElementById('visualization'));
+		}
+		if(choice=="humid"){
+			humid = true;
+			temp=false;
+			humid_visual = new google.visualization.LineChart(document.getElementById('visualization'));
+		}
+	}
+
+	function setAndReset(box) {
+		myOptions = new Array(document.FormName.choice);
+		document.FormName.hiddenInput.value = box.value;
+		for (i=0; i<myOptions.length; i++) {
+			if (myOptions[i].name != box.name) {
+				myOptions[i].selectedIndex = 0;
+			}
+		}
+	}
+
+
       function drawVisualization() {
 
+	var currentTime = new Date();
+	var hours = currentTime.getHours();
+  	var minutes = currentTime.getMinutes();
+	var seconds = currentTime.getSeconds();
+	if (minutes < 10)
+  		minutes = "0" + minutes;
+	if (seconds < 10)
+		seconds = "0" + seconds;
+	var time = hours + ":" + minutes + ":" + seconds;
 
-	var data = new google.visualization.DataTable();
+	data = new google.visualization.DataTable();
+	data.addColumn('string', 'Time');
 	data.addColumn('number', 'panda');
 	data.addColumn('number', 'rmb');
 	data.addColumn('number', 'ronano');
-	data.addRow([75, 75, 75]);
+	data.addRow([time,75, 75, 75]);
 
-	var hdata = new google.visualization.DataTable();
+	hdata = new google.visualization.DataTable();
+	hdata.addColumn('string', 'Time');
 	hdata.addColumn('number', 'panda');
 	hdata.addColumn('number', 'rmb');
 	hdata.addColumn('number', 'ronano');
-	hdata.addRow([30, 30, 30]);
- 
-	new google.visualization.LineChart(document.getElementById('visualization')).
-      		draw(data, {curveType: "function",
+	hdata.addRow([time, 30, 30, 30]);
+	
+	humid_visual = new google.visualization.LineChart(document.getElementById('visualization'));
+	temp_visual = new google.visualization.LineChart(document.getElementById('visualization'));
+	
+
+ 	if(temp){
+      		temp_visual.draw(data, {
                   	width: 500, height: 400, title: "Temperature",
-                  	vAxis: {maxValue: 10}});
+                  	vAxis: {maxValue: 10}});}
 
-	new google.visualization.LineChart(document.getElementById('humidity')).
-      		draw(hdata, {curveType: "function",
+		
+	if(humid){
+      		humid_visual.draw(hdata, {
                   	width: 500, height: 400, title: "Humidity",
-                  	vAxis: {maxValue: 10}});
+                  	vAxis: {maxValue: 10}});}
 
-	setTimeout(update, 5000, data, hdata);
+	t = setTimeout(update, 5000);
 }
 
-function update(data, hdata) {
+
+function update() {
+
+	console.log("update is called yo");
+	var currentTime = new Date();
+	var hours = currentTime.getHours();
+  	var minutes = currentTime.getMinutes();
+	var seconds = currentTime.getSeconds();
+	if (minutes < 10)
+  		minutes = "0" + minutes;
+	if (seconds < 10)
+		seconds = "0" + seconds;
+	var time = hours + ":" + minutes + ":" + seconds;
 
 	var req = new XMLHttpRequest();
 	req.open('GET', '/panda', false);
@@ -73,27 +140,26 @@ function update(data, hdata) {
 	}	
 	}
 
+
+
 	}
 	else alert("badpanda");
 
 	console.log (panda + " " + rmb + " " + ronano);
 	console.log (hpanda + " " + hrmb + " " + hronano);
 
-
-
-
-	data.addRow([panda, rmb, ronano]);
-	hdata.addRow([hpanda, hrmb, hronano]);
-  	new google.visualization.LineChart(document.getElementById('visualization')).
-      		draw(data, {curveType: "function",
+	data.addRow([time, panda, rmb, ronano]);
+	hdata.addRow([time, hpanda, hrmb, hronano]);
+	if(temp){
+      		temp_visual.draw(data, {
                   	width: 500, height: 400, title: "Temperature",
-                  	vAxis: {maxValue: 10}});
-	new google.visualization.LineChart(document.getElementById('humidity')).
-      		draw(hdata, {curveType: "function",
+                  	vAxis: {maxValue: 10}});}
+      	if(humid){
+		humid_visual.draw(hdata, {
                   	width: 500, height: 400, title: "Humidity",
-                  	vAxis: {maxValue: 10}});
+                  	vAxis: {maxValue: 10}});}
 
-	setTimeout(update, 5000, data, hdata);
+	t = setTimeout(update, 5000);
 }
     </script>
 
@@ -101,10 +167,24 @@ function update(data, hdata) {
 <body>
 <p id="hello"></p>
 
-<table>
+
+
+
+<div align="center">
+<h1>BUGSwarmWeather</h1>
+		<select name="choice" id="choice" size="1" align="center">
+			<option value="temp">Temperature</option>
+			<option value="humid">Humidity</option>
+			<option value="press">Pressure</option>
+			<option value="light">Light</option>
+			<option value="map">Map</option>
+		</select><input type='button' onclick='getSelectedValue()' value='Submit'/>
+</div>
+
+<table align="center">
 <tr>
 <td>
-<div id="humidity" style="width:400; height:300"></div>
+<img src="http://2.bp.blogspot.com/_mDE45kXCXoQ/TLr29PVUwVI/AAAAAAAAAZM/PBO6KoUmVBY/s1600/panda+brothers.jpg">
 </td>
 <td>
 <div id="visualization" style="width:400; height:300"></div>
@@ -114,27 +194,58 @@ function update(data, hdata) {
 
 
 
-<table>
+<table width="100%">
 <tr>
 <td>
-<p>rmb's Weather</p>
-<p id="00:50:c2:69:c8:29"></p>
-</td>
-<td>
-<p>ronano's Weather</p>
-<p id="00:50:c2:69:c8:08"></p>
-</td>
-<td>
-<p>panda's (better) Weather</p>
-<p id="00:50:c2:69:c8:2a"></p>
-</td>
-</tr>
+<p align="center">rmb's Weather</p>
+
+<table align="center" border=1>
+<tr><td>Time</td><td><p id="00:50:c2:69:c8:29time"></p></td></tr>
+<tr><td>Temperature</td><td><p id="00:50:c2:69:c8:29temp"></p></td></tr>
+<tr><td>Wind Direction</td><td><p id="00:50:c2:69:c8:29winddir"></p></td></tr>
+<tr><td>Wind Speed</td><td><p id="00:50:c2:69:c8:29windspd"></p></td></tr>
+<tr><td>Dewpoint</td><td><p id="00:50:c2:69:c8:29dew"></p></td></tr>
+<tr><td>Rainfall</td><td><p id="00:50:c2:69:c8:29rain"></p></td></tr>
+<tr><td>Barometric Pressure</td><td><p id="00:50:c2:69:c8:29pressure"></p></td></tr>
+<tr><td>Battery Level</td><td><p id="00:50:c2:69:c8:29battery"></p></td></tr>
+<tr><td>Humidity</td><td><p id="00:50:c2:69:c8:29humidity"></p></td></tr>
 </table>
 
 
-<div style="text-align: center;">
-<img src="http://2.bp.blogspot.com/_mDE45kXCXoQ/TLr29PVUwVI/AAAAAAAAAZM/PBO6KoUmVBY/s1600/panda+brothers.jpg">
-</div>
+</td>
+<td>
+<p align="center">ronano's Weather</p>
 
+<table align="center" border=1>
+<tr><td>Time</td><td><p id="00:50:c2:69:c8:08time">Ronan fix your computer</p></td></tr>
+<tr><td>Temperature</td><td><p id="00:50:c2:69:c8:08temp">Ronan fix your computer</p></td></tr>
+<tr><td>Wind Direction</td><td><p id="00:50:c2:69:c8:08winddir">Ronan fix your computer</p></td></tr>
+<tr><td>Wind Speed</td><td><p id="00:50:c2:69:c8:08windspd">Ronan fix your computer</p></td></tr>
+<tr><td>Dewpoint</td><td><p id="00:50:c2:69:c8:08dew">Ronan fix your computer</p></td></tr>
+<tr><td>Rainfall</td><td><p id="00:50:c2:69:c8:08rain">Ronan fix your computer</p></td></tr>
+<tr><td>Barometric Pressure</td><td><p id="00:50:c2:69:c8:08pressure">Ronan fix your computer</p></td></tr>
+<tr><td>Battery Level</td><td><p id="00:50:c2:69:c8:08battery">Ronan fix your computer</p></td></tr>
+<tr><td>Humidity</td><td><p id="00:50:c2:69:c8:08humidity">Ronan fix your computer</p></td></tr>
+</table>
+
+</td>
+<td>
+<p align="center">panda's (better) Weather</p>
+
+<table align="center" border=1>
+<tr><td>Time</td><td><p id="00:50:c2:69:c8:2atime"></p></td></tr>
+<tr><td>Temperature</td><td><p id="00:50:c2:69:c8:2atemp"></p></td></tr>
+<tr><td>Wind Direction</td><td><p id="00:50:c2:69:c8:2awinddir"></p></td></tr>
+<tr><td>Wind Speed</td><td><p id="00:50:c2:69:c8:2awindspd"></p></td></tr>
+<tr><td>Dewpoint</td><td><p id="00:50:c2:69:c8:2adew"></p></td></tr>
+<tr><td>Rainfall</td><td><p id="00:50:c2:69:c8:2arain"></p></td></tr>
+<tr><td>Barometric Pressure</td><td><p id="00:50:c2:69:c8:2apressure"></p></td></tr>
+<tr><td>Battery Level</td><td><p id="00:50:c2:69:c8:2abattery"></p></td></tr>
+<tr><td>Humidity</td><td><p id="00:50:c2:69:c8:2ahumidity"></p></td></tr>
+</table>
+
+</td>
+</tr>
+</table>
 </body>
 </html>

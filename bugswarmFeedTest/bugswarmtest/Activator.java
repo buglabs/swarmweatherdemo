@@ -1,5 +1,8 @@
 package bugswarmtest;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -77,18 +80,18 @@ public class Activator implements BundleActivator {
 		app = new USB_Weather_Module_DemoApplication(context);
 		serviceTracker = ServiceTrackerHelper.openServiceTracker(context, services, app);
 		
+		final DateFormat formatter = new SimpleDateFormat("hh:mm:ss");
+		final Calendar calendar = Calendar.getInstance();
+		
 		//Do some periodic updates
 		timer = new Timer();
 		//Update the feed every 5 seconds.
 		final Random rnd = new Random();
 		timer.schedule(new TimerTask() {
 			
-		int i = 0;	
 			@Override
 			public void run() {
-				//m.put("currTemp", app.currTemp);
-				i++;
-				m.put("currTemp", i + "");
+				m.put("currTemp", app.currTemp);
 				m.put("currHumid", app.currHumid);
 				m.put("currWinddir", app.currWinddir);
 				m.put("currWindspd", app.currWindspd);
@@ -97,7 +100,10 @@ public class Activator implements BundleActivator {
 				m.put("currBPressure", app.currBPressure);
 				m.put("currBatt",app.currBatt);
 				m.put("currLight", app.currLight);
-				m.put("currTime", Long.toString(System.currentTimeMillis()));
+				
+				calendar.setTimeInMillis(System.currentTimeMillis());
+				
+				m.put("currTime", formatter.format(calendar.getTime()));
 				m.put("UserKey", "" + rnd.nextDouble());
 				sr.setProperties(createProperties(MY_FEED_NAME));
 			}

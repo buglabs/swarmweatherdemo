@@ -65,7 +65,7 @@ ManagedInlineRunnable, PublicWSProvider2 {
 	//	public String currLight;
 	//	public String currSample;
 
-/*
+
 	public String currTemp;
 	public String currHumid;
 	public String currDew;
@@ -76,7 +76,7 @@ ManagedInlineRunnable, PublicWSProvider2 {
 	public String currRain;
 	public String currBatt;
 
-	hardcodevalues!*/
+	/*	hardcodevalues!
 	public final String currTemp = "70";
 	public final String currHumid = "70";
 	public final String currDew = "70";
@@ -86,7 +86,7 @@ ManagedInlineRunnable, PublicWSProvider2 {
 	public final String currWinddir = "70";
 	public final String currRain = "70";
 	public final String currBatt = "70";
-	 
+	 */
 	public USB_Weather_Module_DemoApplication(BundleContext context) {
 		theContext = context ;
 	}
@@ -94,10 +94,9 @@ ManagedInlineRunnable, PublicWSProvider2 {
 	public void run(Map<Object, Object> services) {
 
 		webServiceReg = theContext.registerService(PublicWSProvider2.class.getName(), this, null);
-	}
-	/*	
+
 		IButtonEventProvider ibuttoneventprovider = (IButtonEventProvider) services
-				.get(IButtonEventProvider.class.getName());
+		.get(IButtonEventProvider.class.getName());
 
 		serialConnected = false;
 		isStarted = false ;
@@ -109,11 +108,11 @@ ManagedInlineRunnable, PublicWSProvider2 {
 
 				try {
 
-					///* Test if USB WeatherBoard is detected 
+					/* Test if USB WeatherBoard is detected */
 					Process p;
 					p = Runtime.getRuntime().exec(
 							new String[] { "/bin/sh", "-c",
-									"ls /dev | grep ttyUSB0 " });
+							"ls /dev | grep ttyUSB0 " });
 
 					BufferedReader in = new BufferedReader(
 							new InputStreamReader(p.getInputStream()));
@@ -128,9 +127,9 @@ ManagedInlineRunnable, PublicWSProvider2 {
 						}
 						if (serialConnected && !isStarted) {
 							startWeatherWatcher(); // if serial port
-													// successfully attached,
-													// start sensor watcher
-													// thread
+							// successfully attached,
+							// start sensor watcher
+							// thread
 							isStarted = true ;
 						}
 					}
@@ -164,7 +163,7 @@ ManagedInlineRunnable, PublicWSProvider2 {
 		this.devNode = "/dev/ttyUSB0";
 		try {
 			CommPortIdentifier portIdentifier = CommPortIdentifier
-					.getPortIdentifier(devNode);
+			.getPortIdentifier(devNode);
 			CommPort commPort = portIdentifier.open(this.getClass().getName(),
 					2000);
 			System.out.println("Opened it.");
@@ -194,7 +193,7 @@ ManagedInlineRunnable, PublicWSProvider2 {
 
 	}
 
-	///* Thread to receive weather sensor data from serial port, sampling at 1 Hz 
+	/* Thread to receive weather sensor data from serial port, sampling at 1 Hz */
 	private void startWeatherWatcher() {
 		this.isStarted = true ;
 		timer.schedule(new TimerTask() {
@@ -210,7 +209,7 @@ ManagedInlineRunnable, PublicWSProvider2 {
 							byte[] bb = new byte[numChars];
 							serialIn.read(bb, 0, numChars);
 							strIn += new String(bb);
-//							System.out.println("reading");
+							//							System.out.println("reading");
 						}
 
 						if (strIn.indexOf("$\r\n") != -1) {
@@ -219,37 +218,37 @@ ManagedInlineRunnable, PublicWSProvider2 {
 						Thread.sleep(100);
 					}
 
-					System.out.println("Unparsed: " + strIn);
+					//					System.out.println("Unparsed: " + strIn);
 
-			//		Parse raw data from sensor in to human-readable form.
-				//	 *  Unparsed, looks like:
-				//	 *  #18.10,077.20,025.5,077.98,100407,1018,0,015138$ 
-		//			 
-//					String substring ;
-//					substring = strIn.substring(strIn.indexOf('#') + 1);
-//					String[] dataElements = substring.split(",");
-//					
-//					System.out.println("Relative Humidity: " + dataElements[0] + "%") ;
-//					currHumidity = dataElements[0];
-//					System.out.println("Temp (SHT15 Sensor): " + dataElements[1] + "F");
-//					currTempC = dataElements[1];
-//					System.out.println("Temp (SCP1000 Sensor): " + dataElements[2] + "C");
-//					currTempF = dataElements[2];
-//					System.out.println("Temp (SCP1000 Sensor): " + dataElements[3] + "F");
-//					currTempFSCP = dataElements[3];
-//					System.out.println("Barometric Pressure: " + dataElements[4] + " Pascal") ;
-//					currBPressure = dataElements[4];
-//					System.out.println("Ambient Light: " + dataElements[5]);
-//					currLight = dataElements[5];
-//					System.out.println("sample number - " + dataElements[7].split("$")[0]);
-//					currSample = dataElements[7].split("$")[0] ;
+					/*Parse raw data from sensor in to human-readable form.
+					 *  Unparsed, looks like:
+					 *  #18.10,077.20,025.5,077.98,100407,1018,0,015138$ 
+					 */
+					//					String substring ;
+					//					substring = strIn.substring(strIn.indexOf('#') + 1);
+					//					String[] dataElements = substring.split(",");
+					//					
+					//					System.out.println("Relative Humidity: " + dataElements[0] + "%") ;
+					//					currHumidity = dataElements[0];
+					//					System.out.println("Temp (SHT15 Sensor): " + dataElements[1] + "F");
+					//					currTempC = dataElements[1];
+					//					System.out.println("Temp (SCP1000 Sensor): " + dataElements[2] + "C");
+					//					currTempF = dataElements[2];
+					//					System.out.println("Temp (SCP1000 Sensor): " + dataElements[3] + "F");
+					//					currTempFSCP = dataElements[3];
+					//					System.out.println("Barometric Pressure: " + dataElements[4] + " Pascal") ;
+					//					currBPressure = dataElements[4];
+					//					System.out.println("Ambient Light: " + dataElements[5]);
+					//					currLight = dataElements[5];
+					//					System.out.println("sample number - " + dataElements[7].split("$")[0]);
+					//					currSample = dataElements[7].split("$")[0] ;
 
 
 					//  $,27.9,47,15.6,1221.71,0.8,0.0,-1,0.0,0.00,*
 					String substring ;
-//					substring = strIn.substring(strIn.indexOf('$') + 1);
+					//					substring = strIn.substring(strIn.indexOf('$') + 1);
 					String[] dataElements = strIn.split(",");
-					System.out.println(strIn);
+
 					System.out.println("Temperature: " + dataElements[1] + "C") ;
 					currTemp = dataElements[1];
 					System.out.println("Humidity: " + dataElements[2] + "%");
@@ -291,7 +290,7 @@ ManagedInlineRunnable, PublicWSProvider2 {
 	public void shutdown() {
 
 	}
-	 */
+
 	private String serviceName = "WeatherData";
 
 	public void setPublicName(String name) {
@@ -376,12 +375,6 @@ ManagedInlineRunnable, PublicWSProvider2 {
 			e.printStackTrace();
 		}
 		return root.toString();
-	}
-
-	@Override
-	public void shutdown() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
