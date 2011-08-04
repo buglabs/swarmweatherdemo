@@ -8,14 +8,14 @@ if(req.status == 200)
 
 	for(var i=0;i<jsonweather.length;i++){
 	
-	document.getElementById(jsonweather[i].resource.id + "time").innerHTML = 
-		jsonweather[i].payload.my_test_feed.currTime;
+	document.getElementById(jsonweather[i].resource.id + "light").innerHTML = 
+		jsonweather[i].payload.my_test_feed.currLight;
 
 	document.getElementById(jsonweather[i].resource.id + "temp").innerHTML = 
 		jsonweather[i].payload.my_test_feed.currTemp;
-	if (parseInt(jsonweather[i].payload.my_test_feed.currTemp) >= 88)
+	if (parseInt(jsonweather[i].payload.my_test_feed.currTemp) >= 83)
 		document. getElementById(jsonweather[i].resource.id + "temp") .style. color = "red";
-	if (parseInt(jsonweather[i].payload.my_test_feed.currTemp) < 88)
+	if (parseInt(jsonweather[i].payload.my_test_feed.currTemp) < 83)
 		document. getElementById(jsonweather[i].resource.id + "temp") .style. color = "black";
 
 	document.getElementById(jsonweather[i].resource.id + "winddir").innerHTML = 
@@ -33,14 +33,11 @@ if(req.status == 200)
 	document.getElementById(jsonweather[i].resource.id + "pressure").innerHTML = 
 		jsonweather[i].payload.my_test_feed.currBPressure;
 
-	document.getElementById(jsonweather[i].resource.id + "battery").innerHTML = 
-		jsonweather[i].payload.my_test_feed.currBatt;
-
 	document.getElementById(jsonweather[i].resource.id + "humidity").innerHTML = 
 		jsonweather[i].payload.my_test_feed.currHumid;
 	}
 }
-else alert("bad");
+else alert(req.status);
 
 t=setTimeout("start()",5000);
 }

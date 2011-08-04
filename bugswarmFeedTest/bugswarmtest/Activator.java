@@ -80,7 +80,7 @@ public class Activator implements BundleActivator {
 		app = new USB_Weather_Module_DemoApplication(context);
 		serviceTracker = ServiceTrackerHelper.openServiceTracker(context, services, app);
 		
-		final DateFormat formatter = new SimpleDateFormat("hh:mm:ss");
+		final DateFormat formatter = new SimpleDateFormat("hh.mm.ss");
 		final Calendar calendar = Calendar.getInstance();
 		
 		//Do some periodic updates
@@ -102,8 +102,8 @@ public class Activator implements BundleActivator {
 				m.put("currLight", app.currLight);
 				
 				calendar.setTimeInMillis(System.currentTimeMillis());
-				
-				m.put("currTime", formatter.format(calendar.getTime()));
+				m.put("currTime", Long.toString(System.currentTimeMillis()));
+				//m.put("currTime", formatter.format(calendar.getTime()));
 				m.put("UserKey", "" + rnd.nextDouble());
 				sr.setProperties(createProperties(MY_FEED_NAME));
 			}

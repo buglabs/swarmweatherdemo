@@ -9,9 +9,11 @@ import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.File;
+import java.io.FileInputStream;
+
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -30,17 +32,13 @@ public class Jetty extends AbstractHandler
 	private final String APIKEY = "cad18f704ecc55eba439121d3046cbcd9a227ba8";
 	private final String SWARMID = "7de223a52dc1e690883fd6cd7cebe86024db3e46";
 
-
-
 	private static Connection conn;
-
 
 	private String json_feed;
 
-	private String display1;
-	private String display2;
-
-	private String ui_html;
+	private JSONObject rmb;
+	private JSONObject ron;
+	private JSONObject panda;
 
 	public void handle(String target,
 			Request baseRequest,
@@ -50,7 +48,7 @@ public class Jetty extends AbstractHandler
 	{
 		if (target.contains("panda"))
 		{
-			doStuff();
+			swarmConnect();
 			System.out.println("panda");
 
 			response.setContentType("application/json");
@@ -60,7 +58,7 @@ public class Jetty extends AbstractHandler
 			baseRequest.setHandled(true);
 
 			response.getWriter().println(json_feed);
-/*			JSONArray json = null;
+			JSONArray json = null;
 			try {
 				json = new JSONArray(json_feed);
 			} catch (ParseException e) {
@@ -68,11 +66,23 @@ public class Jetty extends AbstractHandler
 				e.printStackTrace();
 			}
 
-
-			JSONObject rmb = json.getJSONObject(0);
-			JSONObject panda = json.getJSONObject(1);
-			JSONObject ron = json.getJSONObject(2);
-
+			for(int i = 0; i<json.length();i++){
+                if(json.getJSONObject(i).getJSONObject("resource").getString("id").contentEquals("00:50:c2:69:c8:29"))
+                {
+                        rmb = json.getJSONObject(i);
+                }
+                else if(json.getJSONObject(i).getJSONObject("resource").getString("id").contentEquals("00:50:c2:69:c8:2a"))
+                {
+                        panda = json.getJSONObject(i);
+                }
+                else if(json.getJSONObject(i).getJSONObject("resource").getString("id").contentEquals("00:50:c2:69:c8:08"))
+                {
+                        ron = json.getJSONObject(i);
+                }
+                else
+                        System.out.println("[SwarmExtractor] error bug not in swarm");
+			}
+			
 			try {
 				sqlUpdate(conn, parseFeed(rmb,"rmb"), "rmb");
 				sqlUpdate(conn, parseFeed(panda,"panda"), "panda");
@@ -80,19 +90,16 @@ public class Jetty extends AbstractHandler
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}*/
+			}
+			     
 		}
 		else if (target.contains("ui"))
 		{
 			System.out.println("ui");
 
-			//response.setContentType("application/json");
-
 			response.setContentType("text/html;charset=utf-8");
 			response.setStatus(HttpServletResponse.SC_OK);
 			baseRequest.setHandled(true);
-
-			//response.getWriter().println(ui_html);
 
 			StringBuilder panda = new StringBuilder();
 			ClassLoader cl = getClass().getClassLoader();
@@ -133,6 +140,28 @@ public class Jetty extends AbstractHandler
 			}
 			response.getWriter().println(panda.toString());
 		}
+		else if (target.contains("weather.js"))
+		{
+			System.out.println("weather.js");
+			response.setContentType("text/xml");
+			response.setStatus(HttpServletResponse.SC_OK);
+			baseRequest.setHandled(true);
+			StringBuilder panda = new StringBuilder();
+			ClassLoader cl = getClass().getClassLoader();
+			URL url = cl.getResource("weather.js");	    
+			BufferedReader in;
+			try {
+				in = new BufferedReader(
+						new InputStreamReader(
+								url.openStream()));
+				String inputLine;
+				while ((inputLine = in.readLine()) != null)
+					panda.append(inputLine);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			response.getWriter().println(panda.toString());
+		}
 		else if (target.contains("google.js"))
 		{
 			System.out.println("google.js");
@@ -160,9 +189,46 @@ public class Jetty extends AbstractHandler
 			System.out.println(panda.toString());
 			response.getWriter().println(panda.toString());
 		}
+		else if (target.contains("image.png"))
+		{
+			System.out.println("image.png");
+
+			File f = new File("image.png");
+			response.setContentType("image/png");
+			FileInputStream fis = new FileInputStream(f);
+
+			response.setContentLength(fis.available());
+
+			int i = 0;
+			while ((i = fis.read()) != -1) {
+				response.getWriter().write(i);
+				System.out.println(i);
+			}
+			
+			fis.close();
+		}
+		
+		else if (target.contains("rainbow.jpg"))
+		{
+			System.out.println("rainbow.jpg");
+
+			File f = new File("rainbow.jpg");
+			response.setContentType("image/jpg");
+			FileInputStream fis = new FileInputStream(f);
+
+			response.setContentLength(fis.available());
+
+			int i = 0;
+			while ((i = fis.read()) != -1) {
+				response.getWriter().write(i);
+				System.out.println(i);
+			}
+			
+			fis.close();
+		}
 	}
 
-	public void doStuff() {
+	public void swarmConnect() {
 		HttpURLConnection connection = null;
 		BufferedReader rd  = null;
 		StringBuilder sb = null;
@@ -184,12 +250,6 @@ public class Jetty extends AbstractHandler
 			connection.setReadTimeout(10000);
 
 			connection.connect();
-
-			//get the output stream writer and write the output to the server
-			//not needed in this example
-			//wr = new OutputStreamWriter(connection.getOutputStream());
-			//wr.write("");
-			//wr.flush();
 
 			//read the result from the server
 			rd  = new BufferedReader(new InputStreamReader(connection.getInputStream()));
