@@ -5,12 +5,15 @@
     
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript" src="helloworld.js"></script>
-<script type="text/javascript" ></script>
+<script type="text/javascript" src="weather.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
+
 
 <style type="text/css">
 html, body {height:100%; margin:0; padding:0;}
 #page-background {position:fixed; top:0; left:0; width:100%; height:100%;}
 #content {position:relative; z-index:1; padding:10px;}
+#map_canvas { height: 100% }
 </style>
 
 </head>
@@ -43,6 +46,7 @@ html, body {height:100%; margin:0; padding:0;}
 
 <div align="center">
 <select name="choice" id="choice" size="1" align="center">
+	<option value="isMap">Map</option>
 	<option value="temp">Temperature</option>
 	<option value="humid">Humidity</option>
 </select><input type='button' onclick='getSelectedValue()' value='Submit'/>
@@ -54,7 +58,7 @@ html, body {height:100%; margin:0; padding:0;}
 <td>
 <p align="center">rmb's Weather</p>
 <table align="center" border=1>
-<tr><td>Ambient Lightz</td><td><p id="00:50:c2:69:c8:29light"></p></td>
+<tr><td>Ambient Light</td><td><p id="00:50:c2:69:c8:29light"></p></td>
 <td>Temperature</td><td><p id="00:50:c2:69:c8:29temp"></p></td></tr>
 <tr><td>Wind Direction</td><td><p id="00:50:c2:69:c8:29winddir"></p></td>
 <td>Wind Speed</td><td><p id="00:50:c2:69:c8:29windspd"></p></td></tr>
@@ -97,6 +101,8 @@ html, body {height:100%; margin:0; padding:0;}
 </table>
 
 </div>
+<div id="map_canvas"></div>
+
 
 </body>
 </html>

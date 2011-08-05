@@ -7,22 +7,42 @@ var data;
 var hdata;
 var temp = new Boolean();
 var humid = new Boolean();
-temp = true;
-humid = false;
+var isMap = new Boolean();
+temp = false;
+humid = true;
+isMap = false;
 var temp_visual;
 var humid_visual;
+
 
 function getSelectedValue(){
 	var choice = document.getElementById('choice').value;
 	if(choice=="temp"){
 		temp=true;
 		humid=false;
+		isMap=false;
 		temp_visual = new google.visualization.LineChart(document.getElementById('visualization'));
 	}
 	if(choice=="humid"){
 		humid = true;
 		temp=false;
+		isMap=false;
 		humid_visual = new google.visualization.LineChart(document.getElementById('visualization'));
+	}
+	if(choice=="isMap"){
+		humid = false;
+		temp=false;
+		isMap=true;
+		var latlng = new google.maps.LatLng(-34.397, 150.644);
+    		var myOptions = {
+      		zoom: 8,
+      		center: latlng,
+      		mapTypeId: google.maps.MapTypeId.ROADMAP
+    		};
+		document.getElementById('visualization').innerHTML='';
+		alert("so it gets here and then it crashes?");
+    		new google.maps.Map(document.getElementById("visualization"),
+        	myOptions);
 	}
 }
 
@@ -38,6 +58,16 @@ function setAndReset(box) {
 
 
 function drawVisualization() {
+
+var latlng = new google.maps.LatLng(-34.397, 150.644);
+    		var myOptions = {
+      		zoom: 8,
+      		center: latlng,
+      		mapTypeId: google.maps.MapTypeId.ROADMAP
+    		};
+		document.getElementById('visualization').innerHTML='';
+    		new google.maps.Map(document.getElementById("visualization"),
+        	myOptions);
 
 	var currentTime = new Date();
 	var hours = currentTime.getHours();
@@ -77,6 +107,17 @@ function drawVisualization() {
 		humid_visual.draw(hdata, {
 			width: 400, height: 288, title: "Humidity",
 			vAxis: {maxValue: 10}});}
+
+	if(isMap){
+		var latlng = new google.maps.LatLng(-34.397, 150.644);
+    		var myOptions = {
+      		zoom: 8,
+      		center: latlng,
+      		mapTypeId: google.maps.MapTypeId.ROADMAP
+    		};
+		document.getElementById('visualization').innerHTML='';
+    		var map = new google.maps.Map(document.getElementById("visualization"),
+        	myOptions);}
 
 	t = setTimeout(update, 5000);
 }
