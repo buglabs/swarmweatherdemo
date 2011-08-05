@@ -42,7 +42,7 @@ ManagedInlineRunnable, PublicWSProvider2 {
 
 	private BundleContext theContext ;
 	private Timer timer;
-	private static int timerPeriod = 5000;
+	private static int timerPeriod = 5000, i=0;
 
 	private ServiceRegistration webServiceReg ;
 
@@ -249,10 +249,48 @@ ManagedInlineRunnable, PublicWSProvider2 {
 					//					substring = strIn.substring(strIn.indexOf('$') + 1);
 					String[] dataElements = strIn.split(",");
 
-					System.out.println("Temperature: " + dataElements[1] + "C") ;
-					currTemp = dataElements[1];
-					System.out.println("Humidity: " + dataElements[2] + "%");
-					currHumid = dataElements[2];
+					if (dataElements[1] !=null){ //if not null check temp and humidity for spikes
+
+						double temp = Double.parseDouble(dataElements[1]);
+						double hum = Double.parseDouble(dataElements[2]);
+						String prevTemp = currTemp, prevHumid =currHumid;
+
+						if (temp <1000 && hum<1000 && temp >20 && hum >20){ //if within acceptable range print
+
+							System.out.println("Temperature: " + dataElements[1] + "C") ;
+							currTemp = dataElements[1];
+							System.out.println("Humidity: " + dataElements[2] + "%");
+							currHumid = dataElements[2];
+							i=0;
+						}
+
+						else { //if not acceptable print previous values
+							i++;
+							if (i==3){ //if the abnormal spike repeats, print
+
+								System.out.println("Temperature: " + dataElements[1] + "C") ;
+								currTemp = dataElements[1];
+								System.out.println("Humidity: " + dataElements[2] + "%");
+								currHumid = dataElements[2];
+								i=0;
+
+							}
+							else{
+								System.out.println("Temperature: " + prevTemp + "C") ;
+
+								System.out.println("Humidity: " + prevHumid + "%");
+
+							}
+						}
+					}
+
+					else {
+						System.out.println("Temperature: " + dataElements[1] + "C") ;
+						currTemp = dataElements[1];
+						System.out.println("Humidity: " + dataElements[2] + "%");
+						currHumid = dataElements[2];	//if null, print null
+					}
+					
 					System.out.println("Dewpoint: " + dataElements[3] + "C");
 					currDew = dataElements[3];
 					System.out.println("Barometric pressure: " + dataElements[4] + "Hg");
@@ -267,6 +305,8 @@ ManagedInlineRunnable, PublicWSProvider2 {
 					currRain = dataElements[8];
 					System.out.println("Battery Level (0 if USB): " + dataElements[9] + "volts");
 					currBatt = dataElements[9] ;
+
+
 
 				} catch (IOException e) {
 					e.printStackTrace();
