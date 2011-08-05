@@ -118,15 +118,15 @@ public class Jetty extends AbstractHandler
 			response.getWriter().println(panda.toString());
 
 		}
-		else if (target.contains("helloworld.js"))
+		else if (target.contains("swarm.js"))
 		{
-			System.out.println("helloworld.js");
+			System.out.println("swarm.js");
 			response.setContentType("text/xml");
 			response.setStatus(HttpServletResponse.SC_OK);
 			baseRequest.setHandled(true);
 			StringBuilder panda = new StringBuilder();
 			ClassLoader cl = getClass().getClassLoader();
-			URL url = cl.getResource("helloworld.js");	    
+			URL url = cl.getResource("swarm.js");	    
 			BufferedReader in;
 			try {
 				in = new BufferedReader(

@@ -4,7 +4,7 @@
 <head>
     
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript" src="helloworld.js"></script>
+<script type="text/javascript" src="swarm.js"></script>
 <script type="text/javascript" src="weather.js"></script>
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
 
@@ -14,6 +14,12 @@ html, body {height:100%; margin:0; padding:0;}
 #page-background {position:fixed; top:0; left:0; width:100%; height:100%;}
 #content {position:relative; z-index:1; padding:10px;}
 #map_canvas { height: 100% }
+td {
+	border-right: 1px #C1DAD7;
+	border-bottom: 1px #C1DAD7;
+	padding: 6px 6px 6px 6px;
+	color: black;
+}
 </style>
 
 </head>
@@ -56,8 +62,8 @@ html, body {height:100%; margin:0; padding:0;}
 <tr>
 
 <td>
-<p align="center">rmb's Weather</p>
 <table align="center" border=1>
+<caption>rmb's Weather</caption>
 <tr><td>Ambient Light</td><td><p id="00:50:c2:69:c8:29light"></p></td>
 <td>Temperature</td><td><p id="00:50:c2:69:c8:29temp"></p></td></tr>
 <tr><td>Wind Direction</td><td><p id="00:50:c2:69:c8:29winddir"></p></td>
@@ -66,12 +72,14 @@ html, body {height:100%; margin:0; padding:0;}
 <td>Rainfall</td><td><p id="00:50:c2:69:c8:29rain"></p></td></tr>
 <tr><td>Barometric Pressure</td><td><p id="00:50:c2:69:c8:29pressure"></p></td>
 <td>Humidity</td><td><p id="00:50:c2:69:c8:29humidity"></p></td></tr>
+<tr><td>GPS Location</td><td colspan=3><p id="00:50:c2:69:c8:29GPS"></p></td></tr>
 </table>
 </td>
 
 <td>
-<p align="center">ronano's Weather</p>
+
 <table align="center" border=1>
+<caption>ronano's Weather</caption>
 <tr><td>Ambient Light</td><td><p id="00:50:c2:69:c8:08light">Ronan fix your computer</p></td>
 <td>Temperature</td><td><p id="00:50:c2:69:c8:08temp">Ronan fix your computer</p></td></tr>
 <tr><td>Wind Direction</td><td><p id="00:50:c2:69:c8:08winddir">Ronan fix your computer</p></td>
@@ -80,12 +88,13 @@ html, body {height:100%; margin:0; padding:0;}
 <td>Rainfall</td><td><p id="00:50:c2:69:c8:08rain">Ronan fix your computer</p></td></tr>
 <tr><td>Barometric Pressure</td><td><p id="00:50:c2:69:c8:08pressure">Ronan fix your computer</p></td>
 <td>Humidity</td><td><p id="00:50:c2:69:c8:08humidity">Ronan fix your computer</p></td></tr>
+<tr><td>GPS Location</td><td colspan=3><p id="00:50:c2:69:c8:08GPS"></p></td></tr>
 </table>
 </td>
 
 <td>
-<p align="center">panda's (better) Weather</p>
 <table align="center" border=1>
+<caption>panda's (better) Weather</caption>
 <tr><td>Ambient Light</td><td><p id="00:50:c2:69:c8:2alight"></p></td>
 <td>Temperature</td><td><p id="00:50:c2:69:c8:2atemp"></p></td></tr>
 <tr><td>Wind Direction</td><td><p id="00:50:c2:69:c8:2awinddir"></p></td>
@@ -94,6 +103,7 @@ html, body {height:100%; margin:0; padding:0;}
 <td>Rainfall</td><td><p id="00:50:c2:69:c8:2arain"></p></td></tr>
 <tr><td>Barometric Pressure</td><td><p id="00:50:c2:69:c8:2apressure"></p></td>
 <td>Humidity</td><td><p id="00:50:c2:69:c8:2ahumidity"></p></td></tr>
+<tr><td>GPS Location</td><td colspan=3><p id="00:50:c2:69:c8:2aGPS"></p></td></tr>
 </table>
 </td>
 

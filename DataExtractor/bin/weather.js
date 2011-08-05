@@ -22,12 +22,14 @@ function getSelectedValue(){
 		humid=false;
 		isMap=false;
 		temp_visual = new google.visualization.LineChart(document.getElementById('visualization'));
+		drawChart();
 	}
 	if(choice=="humid"){
 		humid = true;
 		temp=false;
 		isMap=false;
 		humid_visual = new google.visualization.LineChart(document.getElementById('visualization'));
+		drawChart();
 	}
 	if(choice=="isMap"){
 		humid = false;
@@ -122,6 +124,16 @@ var latlng = new google.maps.LatLng(-34.397, 150.644);
 	t = setTimeout(update, 5000);
 }
 
+function drawChart() {
+	if(temp){
+		temp_visual.draw(data, {
+			width: 400, height: 288, title: "Temperature",
+			vAxis: {maxValue: 10}});}
+	if(humid){
+		humid_visual.draw(hdata, {
+			width: 400, height: 288, title: "Humidity",
+			vAxis: {maxValue: 10}});}
+}
 
 function update() {
 
@@ -181,14 +193,7 @@ function update() {
 
 	data.addRow([time, panda, rmb, ronano]);
 	hdata.addRow([time, hpanda, hrmb, hronano]);
-	if(temp){
-		temp_visual.draw(data, {
-			width: 400, height: 288, title: "Temperature",
-			vAxis: {maxValue: 10}});}
-	if(humid){
-		humid_visual.draw(hdata, {
-			width: 400, height: 288, title: "Humidity",
-			vAxis: {maxValue: 10}});}
+	drawChart();
 
 	t = setTimeout(update, 5000);
 }
