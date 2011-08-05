@@ -1,8 +1,5 @@
 package bugswarmtest;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -63,7 +60,7 @@ public class Activator implements BundleActivator {
 	private static final String PROP_SWARM_UPDATED = "SWARM.FEED.TIMESTAMP";
 	
 	private static final String MY_FEED_NAME = "my_test_feed";
-	
+	private final String GPS = "40.725194,-73.996933";  //insert real GPS here
 	private ServiceRegistration sr;
 	private ServiceTracker serviceTracker;
 	private Timer timer;
@@ -79,9 +76,6 @@ public class Activator implements BundleActivator {
 		sr = context.registerService(Map.class.getName(), m, createProperties(MY_FEED_NAME));
 		app = new USB_Weather_Module_DemoApplication(context);
 		serviceTracker = ServiceTrackerHelper.openServiceTracker(context, services, app);
-		
-		final DateFormat formatter = new SimpleDateFormat("hh.mm.ss");
-		final Calendar calendar = Calendar.getInstance();
 		
 		//Do some periodic updates
 		timer = new Timer();
@@ -100,10 +94,8 @@ public class Activator implements BundleActivator {
 				m.put("currBPressure", app.currBPressure);
 				m.put("currBatt",app.currBatt);
 				m.put("currLight", app.currLight);
-				
-				calendar.setTimeInMillis(System.currentTimeMillis());
 				m.put("currTime", Long.toString(System.currentTimeMillis()));
-				//m.put("currTime", formatter.format(calendar.getTime()));
+				m.put("currGPS", GPS);
 				m.put("UserKey", "" + rnd.nextDouble());
 				sr.setProperties(createProperties(MY_FEED_NAME));
 			}
