@@ -23,6 +23,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -32,6 +34,8 @@ public class Jetty extends AbstractHandler
 	private final String APIKEY = "cad18f704ecc55eba439121d3046cbcd9a227ba8";
 	private final String SWARMID = "7de223a52dc1e690883fd6cd7cebe86024db3e46";
 
+	
+	private static ArrayList<JSONObject> swarm;
 	private static Connection conn;
 
 	private String json_feed;
@@ -48,49 +52,38 @@ public class Jetty extends AbstractHandler
 	{
 		if (target.contains("panda"))
 		{
-			swarmConnect();
-			System.out.println("panda");
+			 swarmConnect();
+             System.out.println("panda");
 
-			response.setContentType("application/json");
+             response.setContentType("application/json");
 
-			//response.setContentType("text/html;charset=utf-8");
-			response.setStatus(HttpServletResponse.SC_OK);
-			baseRequest.setHandled(true);
+             //response.setContentType("text/html;charset=utf-8");
+             response.setStatus(HttpServletResponse.SC_OK);
+             baseRequest.setHandled(true);
 
-			response.getWriter().println(json_feed);
-			JSONArray json = null;
-			try {
-				json = new JSONArray(json_feed);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			for(int i = 0; i<json.length();i++){
-                if(json.getJSONObject(i).getJSONObject("resource").getString("id").contentEquals("00:50:c2:69:c8:29"))
-                {
-                        rmb = json.getJSONObject(i);
-                }
-                else if(json.getJSONObject(i).getJSONObject("resource").getString("id").contentEquals("00:50:c2:69:c8:2a"))
-                {
-                        panda = json.getJSONObject(i);
-                }
-                else if(json.getJSONObject(i).getJSONObject("resource").getString("id").contentEquals("00:50:c2:69:c8:08"))
-                {
-                        ron = json.getJSONObject(i);
-                }
-                else
-                        System.out.println("[SwarmExtractor] error bug not in swarm");
-			}
-			
-			try {
-				sqlUpdate(conn, parseFeed(rmb,"rmb"), "rmb");
-				sqlUpdate(conn, parseFeed(panda,"panda"), "panda");
-				sqlUpdate(conn, parseFeed(ron,"ron"), "ron");
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+             response.getWriter().println(json_feed);
+             JSONArray json = null;
+             try {
+                     json = new JSONArray(json_feed);
+             } catch (ParseException e) {
+                     // TODO Auto-generated catch block
+                     e.printStackTrace();
+             }
+             swarm = new ArrayList<JSONObject>();
+             for(int i = 0; i<json.length();i++){
+                     swarm.add(json.getJSONObject(i));
+                     System.out.println(json.getJSONObject(i).getJSONObject("resource").getString("id").replaceAll(":", ""));
+                     try {
+                             sqlUpdate(conn,parseFeed(json.getJSONObject(i)),json.getJSONObject(i).getJSONObject("resource").getString("id").replaceAll(":", ""));
+                            
+                     } catch (NoSuchElementException e) {
+                             // TODO Auto-generated catch block
+                             e.printStackTrace();
+                     } catch (SQLException e) {
+                             // TODO Auto-generated catch block
+                             e.printStackTrace();
+                     }
+             }
 			     
 		}
 		else if (target.contains("ui"))
@@ -111,7 +104,11 @@ public class Jetty extends AbstractHandler
 								url.openStream()));
 				String inputLine;
 				while ((inputLine = in.readLine()) != null)
+				{
+					
 					panda.append(inputLine);
+					panda.append("\n");
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -134,7 +131,11 @@ public class Jetty extends AbstractHandler
 								url.openStream()));
 				String inputLine;
 				while ((inputLine = in.readLine()) != null)
+				{
+					
 					panda.append(inputLine);
+					panda.append("\n");
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -156,7 +157,11 @@ public class Jetty extends AbstractHandler
 								url.openStream()));
 				String inputLine;
 				while ((inputLine = in.readLine()) != null)
+				{
+					
 					panda.append(inputLine);
+					panda.append("\n");
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -179,7 +184,11 @@ public class Jetty extends AbstractHandler
 				String inputLine;
 				while ((inputLine = in.readLine()) != null)
 
-				panda.append(inputLine);
+				{
+					
+					panda.append(inputLine);
+					panda.append("\n");
+				}
 				System.out.println("panda");
 
 					panda.append(inputLine);
@@ -279,7 +288,8 @@ public class Jetty extends AbstractHandler
 		}
 	}
 
-	public String parseFeed(JSONObject bug, String name) {
+	public String parseFeed(JSONObject bug) {
+		String name = bug.getJSONObject("resource").getString("id").replaceAll(":", "");
 		JSONObject feed = bug.getJSONObject("payload").getJSONObject("my_test_feed");
 		String currBatt = feed.getString("currBatt");
 		String currTemp = feed.getString("currTemp");

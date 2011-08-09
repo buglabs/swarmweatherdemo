@@ -1,4 +1,3 @@
-
 google.load('visualization', '1.0', {'packages':['corechart']});
 google.setOnLoadCallback(drawVisualization);
 
@@ -7,13 +6,14 @@ var data;
 var hdata;
 var temp = new Boolean();
 var humid = new Boolean();
-var isMap = new Boolean();
-temp = false;
-humid = true;
-isMap = false;
+temp = true;
+humid = false;
 var temp_visual;
 var humid_visual;
 
+var temperature;
+var humidity;
+var order;
 
 function getSelectedValue(){
 	var choice = document.getElementById('choice').value;
@@ -31,21 +31,6 @@ function getSelectedValue(){
 		humid_visual = new google.visualization.LineChart(document.getElementById('visualization'));
 		drawChart();
 	}
-	if(choice=="isMap"){
-		humid = false;
-		temp=false;
-		isMap=true;
-		var latlng = new google.maps.LatLng(-34.397, 150.644);
-    		var myOptions = {
-      		zoom: 8,
-      		center: latlng,
-      		mapTypeId: google.maps.MapTypeId.ROADMAP
-    		};
-		document.getElementById('visualization').innerHTML='';
-		alert("so it gets here and then it crashes?");
-    		new google.maps.Map(document.getElementById("visualization"),
-        	myOptions);
-	}
 }
 
 function setAndReset(box) {
@@ -61,15 +46,14 @@ function setAndReset(box) {
 
 function drawVisualization() {
 
-var latlng = new google.maps.LatLng(-34.397, 150.644);
+/*var latlng = new google.maps.LatLng(-34.397, 150.644);
     		var myOptions = {
       		zoom: 8,
       		center: latlng,
       		mapTypeId: google.maps.MapTypeId.ROADMAP
     		};
-		document.getElementById('visualization').innerHTML='';
-    		new google.maps.Map(document.getElementById("visualization"),
-        	myOptions);
+    		new google.maps.Map(document.getElementById("panda"),
+        	myOptions);*/
 
 	var currentTime = new Date();
 	var hours = currentTime.getHours();
@@ -81,45 +65,30 @@ var latlng = new google.maps.LatLng(-34.397, 150.644);
 		seconds = "0" + seconds;
 	var time = hours + ":" + minutes + ":" + seconds;
 
-	data = new google.visualization.DataTable();
-	data.addColumn('string', 'Time');
-	data.addColumn('number', 'panda');
-	data.addColumn('number', 'rmb');
-	data.addColumn('number', 'ronano');
-	data.addRow([time,75, 75, 75]);
+	var req = new XMLHttpRequest();
+	req.open('GET', '/panda', false);
+	req.send(null);
 
+	data = new google.visualization.DataTable();
 	hdata = new google.visualization.DataTable();
+	data.addColumn('string', 'Time');
 	hdata.addColumn('string', 'Time');
-	hdata.addColumn('number', 'panda');
-	hdata.addColumn('number', 'rmb');
-	hdata.addColumn('number', 'ronano');
-	hdata.addRow([time, 30, 30, 30]);
+
+	order = [];	
+
+	if(req.status == 200)
+	{
+		var jsonweather = eval('(' + req.responseText + ')');
+
+		for(var i=0;i<jsonweather.length;i++){
+			data.addColumn('number', jsonweather[i].resource.id);
+			hdata.addColumn('number', jsonweather[i].resource.id);
+			order.push(jsonweather[i].resource.id);
+		}
+	}
 
 	humid_visual = new google.visualization.LineChart(document.getElementById('visualization'));
 	temp_visual = new google.visualization.LineChart(document.getElementById('visualization'));
-
-
-	if(temp){
-		temp_visual.draw(data, {
-			width: 400, height: 288, title: "Temperature",
-			vAxis: {maxValue: 10}});}
-
-
-	if(humid){
-		humid_visual.draw(hdata, {
-			width: 400, height: 288, title: "Humidity",
-			vAxis: {maxValue: 10}});}
-
-	if(isMap){
-		var latlng = new google.maps.LatLng(-34.397, 150.644);
-    		var myOptions = {
-      		zoom: 8,
-      		center: latlng,
-      		mapTypeId: google.maps.MapTypeId.ROADMAP
-    		};
-		document.getElementById('visualization').innerHTML='';
-    		var map = new google.maps.Map(document.getElementById("visualization"),
-        	myOptions);}
 
 	t = setTimeout(update, 5000);
 }
@@ -127,11 +96,11 @@ var latlng = new google.maps.LatLng(-34.397, 150.644);
 function drawChart() {
 	if(temp){
 		temp_visual.draw(data, {
-			width: 400, height: 288, title: "Temperature",
+			width: 425, height: 350, title: "Temperature",
 			vAxis: {maxValue: 10}});}
 	if(humid){
 		humid_visual.draw(hdata, {
-			width: 400, height: 288, title: "Humidity",
+			width: 425, height: 350, title: "Humidity",
 			vAxis: {maxValue: 10}});}
 }
 
@@ -152,49 +121,33 @@ function update() {
 	req.open('GET', '/panda', false);
 	req.send(null);
 
-	var panda = 0;
-	var rmb = 0;
-	var ronano = 0;
-
-	var hpanda = 0;
-	var hrmb = 0;
-	var hronano = 0;
+	var j = 0;
 
 	if(req.status == 200)
 	{
 		var jsonweather = eval('(' + req.responseText + ')');
+		
+		var newdata = new Array(jsonweather.length + 1);
+		var newhdata = new Array(jsonweather.length + 1);
+		newdata[0] = time;
+		newhdata[0] = time;
 
 		for(var i=0;i<jsonweather.length;i++){
-			if (jsonweather[i].resource.id == "00:50:c2:69:c8:29")
-			{
-				rmb = parseInt(jsonweather[i].payload.my_test_feed.currTemp);
-				hrmb = parseInt(jsonweather[i].payload.my_test_feed.currHumid);
-			}
-			if (jsonweather[i].resource.id == "00:50:c2:69:c8:2a")
-			{
-				panda = parseInt(jsonweather[i].payload.my_test_feed.currTemp);
-				hpanda = parseInt(jsonweather[i].payload.my_test_feed.currHumid);
+			
+			j = order.indexOf(jsonweather[i].resource.id);
 
-			}
-			if (jsonweather[i].resource.id == "00:50:c2:69:c8:08")
-			{
-				ronano = parseInt(jsonweather[i].payload.my_test_feed.currTemp); 
-				hronano = parseInt(jsonweather[i].payload.my_test_feed.currHumid); 
-			}	
+			newdata[j+1] = parseInt(jsonweather[i].payload.my_test_feed.currTemp);
+			newhdata[j+1] = parseInt(jsonweather[i].payload.my_test_feed.currHumid);
+		
 		}
 
-
-
 	}
-	else alert("badpanda");
 
-	console.log (panda + " " + rmb + " " + ronano);
-	console.log (hpanda + " " + hrmb + " " + hronano);
-
-	data.addRow([time, panda, rmb, ronano]);
-	hdata.addRow([time, hpanda, hrmb, hronano]);
+	console.log(newdata);
+	console.log(newhdata);
+	data.addRow(newdata);
+	hdata.addRow(newhdata);
 	drawChart();
 
 	t = setTimeout(update, 5000);
 }
-

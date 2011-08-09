@@ -8,7 +8,6 @@
 <script type="text/javascript" src="weather.js"></script>
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
 
-
 <style type="text/css">
 html, body {height:100%; margin:0; padding:0;}
 #page-background {position:fixed; top:0; left:0; width:100%; height:100%;}
@@ -21,7 +20,6 @@ td {
 	color: black;
 }
 </style>
-
 </head>
 
 <body>
@@ -32,19 +30,19 @@ td {
 
 <div id="content">
 
-<div align="center">
-<img src="image.png">
-</div>
+<div align="center"><img src="image.png"></div>
+
+<div id="data" align="center"></div>
 
 <table align="center">
 <tr>
 
 <td>
-<img src="http://2.bp.blogspot.com/_mDE45kXCXoQ/TLr29PVUwVI/AAAAAAAAAZM/PBO6KoUmVBY/s1600/panda+brothers.jpg">
+<iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=40.7251838,+-73.9969423&amp;aq=&amp;sll=37.0625,-95.677068&amp;sspn=55.806079,79.013672&amp;ie=UTF8&amp;z=14&amp;ll=40.725184,-73.996942&amp;output=embed"></iframe><br /><small><a href="http://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q=40.7251838,+-73.9969423&amp;aq=&amp;sll=37.0625,-95.677068&amp;sspn=55.806079,79.013672&amp;ie=UTF8&amp;z=14&amp;ll=40.725184,-73.996942" style="color:#0000FF;text-align:left">View Larger Map</a></small>
 </td>
 
 <td>
-<div id="visualization" style="width:400; height:288"></div>
+<div id="visualization" style="width:425; height:350"></div>
 </td>
 
 </tr>
@@ -52,67 +50,12 @@ td {
 
 <div align="center">
 <select name="choice" id="choice" size="1" align="center">
-	<option value="isMap">Map</option>
 	<option value="temp">Temperature</option>
 	<option value="humid">Humidity</option>
 </select><input type='button' onclick='getSelectedValue()' value='Submit'/>
 </div>
 
-<table width="100%">
-<tr>
-
-<td>
-<table align="center" border=1>
-<caption>rmb's Weather</caption>
-<tr><td>Ambient Light</td><td><p id="00:50:c2:69:c8:29light"></p></td>
-<td>Temperature</td><td><p id="00:50:c2:69:c8:29temp"></p></td></tr>
-<tr><td>Wind Direction</td><td><p id="00:50:c2:69:c8:29winddir"></p></td>
-<td>Wind Speed</td><td><p id="00:50:c2:69:c8:29windspd"></p></td></tr>
-<tr><td>Dewpoint</td><td><p id="00:50:c2:69:c8:29dew"></p></td>
-<td>Rainfall</td><td><p id="00:50:c2:69:c8:29rain"></p></td></tr>
-<tr><td>Barometric Pressure</td><td><p id="00:50:c2:69:c8:29pressure"></p></td>
-<td>Humidity</td><td><p id="00:50:c2:69:c8:29humidity"></p></td></tr>
-<tr><td>GPS Location</td><td colspan=3><p id="00:50:c2:69:c8:29GPS"></p></td></tr>
-</table>
-</td>
-
-<td>
-
-<table align="center" border=1>
-<caption>ronano's Weather</caption>
-<tr><td>Ambient Light</td><td><p id="00:50:c2:69:c8:08light">Ronan fix your computer</p></td>
-<td>Temperature</td><td><p id="00:50:c2:69:c8:08temp">Ronan fix your computer</p></td></tr>
-<tr><td>Wind Direction</td><td><p id="00:50:c2:69:c8:08winddir">Ronan fix your computer</p></td>
-<td>Wind Speed</td><td><p id="00:50:c2:69:c8:08windspd">Ronan fix your computer</p></td></tr>
-<tr><td>Dewpoint</td><td><p id="00:50:c2:69:c8:08dew">Ronan fix your computer</p></td>
-<td>Rainfall</td><td><p id="00:50:c2:69:c8:08rain">Ronan fix your computer</p></td></tr>
-<tr><td>Barometric Pressure</td><td><p id="00:50:c2:69:c8:08pressure">Ronan fix your computer</p></td>
-<td>Humidity</td><td><p id="00:50:c2:69:c8:08humidity">Ronan fix your computer</p></td></tr>
-<tr><td>GPS Location</td><td colspan=3><p id="00:50:c2:69:c8:08GPS"></p></td></tr>
-</table>
-</td>
-
-<td>
-<table align="center" border=1>
-<caption>panda's (better) Weather</caption>
-<tr><td>Ambient Light</td><td><p id="00:50:c2:69:c8:2alight"></p></td>
-<td>Temperature</td><td><p id="00:50:c2:69:c8:2atemp"></p></td></tr>
-<tr><td>Wind Direction</td><td><p id="00:50:c2:69:c8:2awinddir"></p></td>
-<td>Wind Speed</td><td><p id="00:50:c2:69:c8:2awindspd"></p></td></tr>
-<tr><td>Dewpoint</td><td><p id="00:50:c2:69:c8:2adew"></p></td>
-<td>Rainfall</td><td><p id="00:50:c2:69:c8:2arain"></p></td></tr>
-<tr><td>Barometric Pressure</td><td><p id="00:50:c2:69:c8:2apressure"></p></td>
-<td>Humidity</td><td><p id="00:50:c2:69:c8:2ahumidity"></p></td></tr>
-<tr><td>GPS Location</td><td colspan=3><p id="00:50:c2:69:c8:2aGPS"></p></td></tr>
-</table>
-</td>
-
-</tr>
-</table>
-
 </div>
-<div id="map_canvas"></div>
-
 
 </body>
 </html>

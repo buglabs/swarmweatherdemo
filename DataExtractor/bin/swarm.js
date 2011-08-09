@@ -4,40 +4,26 @@ req.open('GET', '/panda', false);
 req.send(null);
 if(req.status == 200)
 {
+	while (document.getElementById("data").hasChildNodes()) {
+    		document.getElementById("data").removeChild(document.getElementById("data").lastChild);
+	}
+
 	var jsonweather = eval('(' + req.responseText + ')');
 
 	for(var i=0;i<jsonweather.length;i++){
-	
-	document.getElementById(jsonweather[i].resource.id + "light").innerHTML = 
-		jsonweather[i].payload.my_test_feed.currLight;
 
-	document.getElementById(jsonweather[i].resource.id + "temp").innerHTML = 
-		jsonweather[i].payload.my_test_feed.currTemp;
+	var d = document.createElement("div");
+	d.setAttribute("id", jsonweather[i].resource.id); 
+	document.getElementById("data").appendChild(d);
+	document.getElementById(jsonweather[i].resource.id).innerHTML = 
+		"BUG with ID " + jsonweather[i].resource.id + " " +
+		"Temperature: " + jsonweather[i].payload.my_test_feed.currTemp + " " +
+		"Humidity: " + jsonweather[i].payload.my_test_feed.currHumid + " " +
+		"Time: " + jsonweather[i].payload.my_test_feed.currTime;
 	if (parseInt(jsonweather[i].payload.my_test_feed.currTemp) >= 83)
-		document. getElementById(jsonweather[i].resource.id + "temp") .style. color = "red";
+		document. getElementById(jsonweather[i].resource.id) .style. color = "red";
 	if (parseInt(jsonweather[i].payload.my_test_feed.currTemp) < 83)
-		document. getElementById(jsonweather[i].resource.id + "temp") .style. color = "black";
-
-	document.getElementById(jsonweather[i].resource.id + "winddir").innerHTML = 
-		jsonweather[i].payload.my_test_feed.currWinddir;
-
-	document.getElementById(jsonweather[i].resource.id + "windspd").innerHTML = 
-		jsonweather[i].payload.my_test_feed.currWindspd;
-
-	document.getElementById(jsonweather[i].resource.id + "dew").innerHTML = 
-		jsonweather[i].payload.my_test_feed.currDew;
-
-	document.getElementById(jsonweather[i].resource.id + "rain").innerHTML = 
-		jsonweather[i].payload.my_test_feed.currRain;
-
-	document.getElementById(jsonweather[i].resource.id + "pressure").innerHTML = 
-		jsonweather[i].payload.my_test_feed.currBPressure;
-
-	document.getElementById(jsonweather[i].resource.id + "humidity").innerHTML = 
-		jsonweather[i].payload.my_test_feed.currHumid;
-
-	document.getElementById(jsonweather[i].resource.id + "GPS").innerHTML = 
-		jsonweather[i].payload.my_test_feed.currGPS;
+		document. getElementById(jsonweather[i].resource.id) .style. color = "black";
 	}
 }
 else alert(req.status);
@@ -45,7 +31,5 @@ else alert(req.status);
 t=setTimeout("start()",5000);
 }
 window.onload = start;
-
-
 
 

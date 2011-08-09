@@ -230,10 +230,10 @@ ManagedInlineRunnable, PublicWSProvider2 {
 					//					
 					//					System.out.println("Relative Humidity: " + dataElements[0] + "%") ;
 					//					currHumidity = dataElements[0];
-					//					System.out.println("Temp (SHT15 Sensor): " + dataElements[1] + "F");
-					//					currTempC = dataElements[1];
-					//					System.out.println("Temp (SCP1000 Sensor): " + dataElements[2] + "C");
-					//					currTempF = dataElements[2];
+								/*		System.out.println("Temp (SHT15 Sensor): " + dataElements[1] + "F");
+										currTempC = dataElements[1];
+										System.out.println("Temp (SCP1000 Sensor): " + dataElements[2] + "C");
+										currTempF = dataElements[2];*/
 					//					System.out.println("Temp (SCP1000 Sensor): " + dataElements[3] + "F");
 					//					currTempFSCP = dataElements[3];
 					//					System.out.println("Barometric Pressure: " + dataElements[4] + " Pascal") ;
@@ -249,48 +249,10 @@ ManagedInlineRunnable, PublicWSProvider2 {
 					//					substring = strIn.substring(strIn.indexOf('$') + 1);
 					String[] dataElements = strIn.split(",");
 
-					if (dataElements[1] !=null){ //if not null check temp and humidity for spikes
-
-						double temp = Double.parseDouble(dataElements[1]);
-						double hum = Double.parseDouble(dataElements[2]);
-						String prevTemp = currTemp, prevHumid =currHumid;
-
-						if (temp <1000 && hum<1000 && temp >20 && hum >20){ //if within acceptable range print
-
-							System.out.println("Temperature: " + dataElements[1] + "C") ;
-							currTemp = dataElements[1];
-							System.out.println("Humidity: " + dataElements[2] + "%");
-							currHumid = dataElements[2];
-							i=0;
-						}
-
-						else { //if not acceptable print previous values
-							i++;
-							if (i==3){ //if the abnormal spike repeats, print
-
-								System.out.println("Temperature: " + dataElements[1] + "C") ;
-								currTemp = dataElements[1];
-								System.out.println("Humidity: " + dataElements[2] + "%");
-								currHumid = dataElements[2];
-								i=0;
-
-							}
-							else{
-								System.out.println("Temperature: " + prevTemp + "C") ;
-
-								System.out.println("Humidity: " + prevHumid + "%");
-
-							}
-						}
-					}
-
-					else {
-						System.out.println("Temperature: " + dataElements[1] + "C") ;
-						currTemp = dataElements[1];
-						System.out.println("Humidity: " + dataElements[2] + "%");
-						currHumid = dataElements[2];	//if null, print null
-					}
-					
+					System.out.println("Temperature: " + dataElements[1] + "C") ;
+					currTemp = dataElements[1];
+					System.out.println("Humidity: " + dataElements[2] + "%");
+					currHumid = dataElements[2];
 					System.out.println("Dewpoint: " + dataElements[3] + "C");
 					currDew = dataElements[3];
 					System.out.println("Barometric pressure: " + dataElements[4] + "Hg");

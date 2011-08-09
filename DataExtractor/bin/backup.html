@@ -1,60 +1,99 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
- "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-<script type="text/javascript" src="helloworld.js"></script>
-<title>Panda</title>
+<table width="100%">
+<tr>
 
-<!--Load the AJAX API-->
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <script type="text/javascript">
-    
-      // Load the Visualization API and the piechart package.
-      google.load('visualization', '1.0', {'packages':['corechart']});
-      
-      // Set a callback to run when the Google Visualization API is loaded.
-      google.setOnLoadCallback(drawChart);
+<td>
+<table align="center" border=1>
+<caption>rmb's Weather</caption>
+<tr><td>Ambient Light</td><td><p id="00:50:c2:69:c8:29light"></p></td>
+<td>Temperature</td><td><p id="00:50:c2:69:c8:29temp"></p></td></tr>
+<tr><td>Wind Direction</td><td><p id="00:50:c2:69:c8:29winddir"></p></td>
+<td>Wind Speed</td><td><p id="00:50:c2:69:c8:29windspd"></p></td></tr>
+<tr><td>Dewpoint</td><td><p id="00:50:c2:69:c8:29dew"></p></td>
+<td>Rainfall</td><td><p id="00:50:c2:69:c8:29rain"></p></td></tr>
+<tr><td>Barometric Pressure</td><td><p id="00:50:c2:69:c8:29pressure"></p></td>
+<td>Humidity</td><td><p id="00:50:c2:69:c8:29humidity"></p></td></tr>
+<tr><td>GPS Location</td><td colspan=3><p id="00:50:c2:69:c8:29GPS"></p></td></tr>
+</table>
+</td>
 
-      // Callback that creates and populates a data table, 
-      // instantiates the pie chart, passes in the data and
-      // draws it.
-      function drawChart() {
+<td>
 
-      // Create the data table.
-      var data = new google.visualization.DataTable();
-      data.addColumn('string', 'Topping');
-      data.addColumn('number', 'Slices');
-      data.addRows([
-        ['Mushrooms', 3],
-        ['Onions', 1],
-        ['Olives', 1], 
-        ['Zucchini', 1],
-        ['Pepperoni', 2]
-      ]);
+<table align="center" border=1>
+<caption>ronano's Weather</caption>
+<tr><td>Ambient Light</td><td><p id="00:50:c2:69:c8:08light">Ronan fix your computer</p></td>
+<td>Temperature</td><td><p id="00:50:c2:69:c8:08temp">Ronan fix your computer</p></td></tr>
+<tr><td>Wind Direction</td><td><p id="00:50:c2:69:c8:08winddir">Ronan fix your computer</p></td>
+<td>Wind Speed</td><td><p id="00:50:c2:69:c8:08windspd">Ronan fix your computer</p></td></tr>
+<tr><td>Dewpoint</td><td><p id="00:50:c2:69:c8:08dew">Ronan fix your computer</p></td>
+<td>Rainfall</td><td><p id="00:50:c2:69:c8:08rain">Ronan fix your computer</p></td></tr>
+<tr><td>Barometric Pressure</td><td><p id="00:50:c2:69:c8:08pressure">Ronan fix your computer</p></td>
+<td>Humidity</td><td><p id="00:50:c2:69:c8:08humidity">Ronan fix your computer</p></td></tr>
+<tr><td>GPS Location</td><td colspan=3><p id="00:50:c2:69:c8:08GPS"></p></td></tr>
+</table>
+</td>
 
-      // Set chart options
-      var options = {'title':'How Much Pizza I Ate Last Night',
-                     'width':400,
-                     'height':300};
+<td>
+<table align="center" border=1>
+<caption>panda's (better) Weather</caption>
+<tr><td>Ambient Light</td><td><p id="00:50:c2:69:c8:2alight"></p></td>
+<td>Temperature</td><td><p id="00:50:c2:69:c8:2atemp"></p></td></tr>
+<tr><td>Wind Direction</td><td><p id="00:50:c2:69:c8:2awinddir"></p></td>
+<td>Wind Speed</td><td><p id="00:50:c2:69:c8:2awindspd"></p></td></tr>
+<tr><td>Dewpoint</td><td><p id="00:50:c2:69:c8:2adew"></p></td>
+<td>Rainfall</td><td><p id="00:50:c2:69:c8:2arain"></p></td></tr>
+<tr><td>Barometric Pressure</td><td><p id="00:50:c2:69:c8:2apressure"></p></td>
+<td>Humidity</td><td><p id="00:50:c2:69:c8:2ahumidity"></p></td></tr>
+<tr><td>GPS Location</td><td colspan=3><p id="00:50:c2:69:c8:2aGPS"></p></td></tr>
+</table>
+</td>
 
-      // Instantiate and draw our chart, passing in some options.
-      var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-      chart.draw(data, options);
+</tr>
+</table>
 
-    }
-    </script>
+	document.getElementById(jsonweather[i].resource.id + "light").innerHTML = 
+		jsonweather[i].payload.my_test_feed.currLight;
 
-</head>
-<body>
-<p id="hello"></p>
-<p>rmb's Weather</p>
-<p id="00:50:c2:69:c8:29"></p>
-<img src="http://www.bearsoftheworld.net/images/bears/giant_pandas_06.jpg">
-<p>panda's (better) Weather</p>
-<p id="00:50:c2:69:c8:2a"></p>
+	document.getElementById(jsonweather[i].resource.id + "temp").innerHTML = 
+		jsonweather[i].payload.my_test_feed.currTemp;
+	if (parseInt(jsonweather[i].payload.my_test_feed.currTemp) >= 83)
+		document. getElementById(jsonweather[i].resource.id + "temp") .style. color = "red";
+	if (parseInt(jsonweather[i].payload.my_test_feed.currTemp) < 83)
+		document. getElementById(jsonweather[i].resource.id + "temp") .style. color = "black";
 
-<!--Div that will hold the pie chart-->
-    <div id="chart_div" style="width:400; height:300"></div>
+	document.getElementById(jsonweather[i].resource.id + "winddir").innerHTML = 
+		jsonweather[i].payload.my_test_feed.currWinddir;
 
-</body>
-</html>
+	document.getElementById(jsonweather[i].resource.id + "windspd").innerHTML = 
+		jsonweather[i].payload.my_test_feed.currWindspd;
+
+	document.getElementById(jsonweather[i].resource.id + "dew").innerHTML = 
+		jsonweather[i].payload.my_test_feed.currDew;
+
+	document.getElementById(jsonweather[i].resource.id + "rain").innerHTML = 
+		jsonweather[i].payload.my_test_feed.currRain;
+
+	document.getElementById(jsonweather[i].resource.id + "pressure").innerHTML = 
+		jsonweather[i].payload.my_test_feed.currBPressure;
+
+	document.getElementById(jsonweather[i].resource.id + "humidity").innerHTML = 
+		jsonweather[i].payload.my_test_feed.currHumid;
+
+	document.getElementById(jsonweather[i].resource.id + "GPS").innerHTML = 
+		jsonweather[i].payload.my_test_feed.currGPS;
+
+if (jsonweather[i].resource.id == "00:50:c2:69:c8:29")
+			{
+				rmb = parseInt(jsonweather[i].payload.my_test_feed.currTemp);
+				hrmb = parseInt(jsonweather[i].payload.my_test_feed.currHumid);
+			}
+			if (jsonweather[i].resource.id == "00:50:c2:69:c8:2a")
+			{
+				panda = parseInt(jsonweather[i].payload.my_test_feed.currTemp);
+				hpanda = parseInt(jsonweather[i].payload.my_test_feed.currHumid);
+
+			}
+			if (jsonweather[i].resource.id == "00:50:c2:69:c8:08")
+			{
+				ronano = parseInt(jsonweather[i].payload.my_test_feed.currTemp); 
+				hronano = parseInt(jsonweather[i].payload.my_test_feed.currHumid); 
+			}	
