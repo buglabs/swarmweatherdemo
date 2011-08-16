@@ -1,0 +1,28 @@
+<html>
+    <head>
+        
+	<script src="http://d1z10qq7obk1ve.cloudfront.net/swarm/test/swarm-v1.0.0.beta.js"></script>
+        <!-- BugLabs deployment environments (internal use only) -->
+        <!-- 
+        <script src="../dist/dev/swarm-v1.0.0.beta.js"></script>
+        <script src="../dist/int/swarm-v1.0.0.beta.js"></script>
+        <script src="../dist/test/swarm-v1.0.0.beta.js"></script>
+        <script src="../dist/stage/swarm-v1.0.0.beta.js"></script>
+        <script src="../dist/prod/swarm-v1.0.0.beta.js"></script>
+	<script src="http://cdn.buglabs.net/swarm/swarm-v1.0.0.beta.js"></script>
+         -->
+    </head>
+    <body>
+        <script>
+            /* just open this file twice or more and you should be able 
+                to see presence in the developer console. */
+            SWARM.join({apikey: '0f6512f1f51dd194a15a63a5773f99d66a49be42', 
+                        swarms: '7de223a52dc1e690883fd6cd7cebe86024db3e46',
+                        callback: function(message) {
+                            console.log(Date.now() + ': ' + JSON.stringify(message)); 
+                        }
+            });
+        </script>
+    </body>
+</html>
+
