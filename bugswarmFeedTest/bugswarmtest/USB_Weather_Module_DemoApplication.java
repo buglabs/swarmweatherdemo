@@ -21,17 +21,13 @@ import java.util.TimerTask;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
-import com.buglabs.device.IButtonEventProvider;
+import com.buglabs.bug.buttons.IButtonEventProvider;
 import com.buglabs.services.ws.IWSResponse;
 import com.buglabs.services.ws.PublicWSDefinition;
 import com.buglabs.services.ws.PublicWSProvider2;
 import com.buglabs.services.ws.WSResponse;
-
-import com.buglabs.application.ServiceTrackerHelper.ManagedInlineRunnable;
-import com.buglabs.application.ServiceTrackerHelper.ManagedRunnable;
-
-import com.buglabs.util.SelfReferenceException;
-import com.buglabs.util.XmlNode;
+import com.buglabs.util.osgi.ServiceTrackerUtil.ManagedInlineRunnable;
+import com.buglabs.util.xml.XmlNode;
 
 /**
  * To be used with the SparkFun USB WeatherBoard. Enjoy
@@ -91,7 +87,7 @@ ManagedInlineRunnable, PublicWSProvider2 {
 		theContext = context ;
 	}
 
-	public void run(Map<Object, Object> services) {
+	public void run(Map<String, Object> services) {
 
 		webServiceReg = theContext.registerService(PublicWSProvider2.class.getName(), this, null);
 
@@ -341,41 +337,35 @@ ManagedInlineRunnable, PublicWSProvider2 {
 		//                <Pin number="0">0</Pin>
 		// 			      <Pin number="1">0</Pin> ...
 		XmlNode gpio = new XmlNode("WeatherBoard");
-		try {
+		
+		XmlNode pin0 = new XmlNode("Sensor", currHumid);
+		XmlNode pin1 = new XmlNode("Sensor", currTemp);
+		XmlNode pin2 = new XmlNode("Sensor", currDew);
+		XmlNode pin3 = new XmlNode("Sensor", currBatt);
+		XmlNode pin4 = new XmlNode("Sensor", currBPressure);
+		XmlNode pin5 = new XmlNode("Sensor", currLight);
 
-			XmlNode pin0 = new XmlNode("Sensor", currHumid);
-			XmlNode pin1 = new XmlNode("Sensor", currTemp);
-			XmlNode pin2 = new XmlNode("Sensor", currDew);
-			XmlNode pin3 = new XmlNode("Sensor", currBatt);
-			XmlNode pin4 = new XmlNode("Sensor", currBPressure);
-			XmlNode pin5 = new XmlNode("Sensor", currLight);
+		pin0.addAttribute("type", "RelHumidity");
+		pin1.addAttribute("type", "Temperature");
+		pin2.addAttribute("type", "DewPoint");
+		pin3.addAttribute("type", "BattLevel");
+		pin4.addAttribute("type", "BaromPressure");
+		pin5.addAttribute("type", "AmbientLight");
 
-			pin0.addAttribute("type", "RelHumidity");
-			pin1.addAttribute("type", "Temperature");
-			pin2.addAttribute("type", "DewPoint");
-			pin3.addAttribute("type", "BattLevel");
-			pin4.addAttribute("type", "BaromPressure");
-			pin5.addAttribute("type", "AmbientLight");
-
-			pin0.addAttribute("unit", "%");
-			pin1.addAttribute("unit", "C");
-			pin2.addAttribute("unit", "C");
-			pin3.addAttribute("unit", "Volts");
-			pin4.addAttribute("unit", "Hg");
-			pin5.addAttribute("unit", "%");
-			gpio.addChildElement(pin0);
-			gpio.addChildElement(pin1);
-			gpio.addChildElement(pin2);
-			gpio.addChildElement(pin3);
-			gpio.addChildElement(pin4);
-			gpio.addChildElement(pin5);
-			root.addChildElement(gpio);
-		} catch (SelfReferenceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}catch (IOException e) {
-			e.printStackTrace();
-		}
+		pin0.addAttribute("unit", "%");
+		pin1.addAttribute("unit", "C");
+		pin2.addAttribute("unit", "C");
+		pin3.addAttribute("unit", "Volts");
+		pin4.addAttribute("unit", "Hg");
+		pin5.addAttribute("unit", "%");
+		gpio.addChild(pin0);
+		gpio.addChild(pin1);
+		gpio.addChild(pin2);
+		gpio.addChild(pin3);
+		gpio.addChild(pin4);
+		gpio.addChild(pin5);
+		root.addChild(gpio);
+		
 		return root.toString();
 	}
 

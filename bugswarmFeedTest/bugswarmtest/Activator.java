@@ -13,9 +13,8 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.util.tracker.ServiceTracker;
 
-
-import com.buglabs.application.ServiceTrackerHelper;
-import com.buglabs.device.IButtonEventProvider;
+import com.buglabs.bug.buttons.IButtonEventProvider;
+import com.buglabs.util.osgi.ServiceTrackerUtil;
 
 
 /**
@@ -75,7 +74,7 @@ public class Activator implements BundleActivator {
 		//Register it so it is picked up by bugswarm-connector
 		sr = context.registerService(Map.class.getName(), m, createProperties(MY_FEED_NAME));
 		app = new USB_Weather_Module_DemoApplication(context);
-		serviceTracker = ServiceTrackerHelper.openServiceTracker(context, services, app);
+		serviceTracker = ServiceTrackerUtil.openServiceTracker(context, app, services);
 		
 		//Do some periodic updates
 		timer = new Timer();
