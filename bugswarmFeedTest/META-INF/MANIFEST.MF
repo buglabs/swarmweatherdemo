@@ -2,13 +2,19 @@ Manifest-Version: 1.0
 Bundle-Vendor: kgilmer
 Bug-Bundle-Type: Application
 Bundle-Version: 1.0.0
-BUG-API-Version: 2.0.2
+BUG-API-Version: 3.0.0
 Bundle-Name: bugswarmFeedTest
 Bundle-ManifestVersion: 2
 Bundle-Activator: bugswarmtest.Activator
 Bundle-Description: Test BUGswarm Feeds
 Bundle-SymbolicName: bugswarmFeedTest
-Import-Package: org.osgi.framework,com.buglabs.device,org.osgi.util.tr
- acker,org.osgi.service.log,com.buglabs.application,com.buglabs.util,g
- nu.io,com.buglabs.services.ws
+Import-Package: 
+ org.osgi.framework,
+ com.buglabs.bug.buttons,
+ org.osgi.util.tracker,
+ org.osgi.service.log,
+ com.buglabs.util.osgi,
+ com.buglabs.util.xml,
+ gnu.io,
+ com.buglabs.services.ws
 
